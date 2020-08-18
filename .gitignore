@@ -1,0 +1,11 @@
+/packages
+/.vs
+bin
+obj
+*.user
+Web.Debug.config
+Web.Release.config
+/NFine.Web/Web.Debug.config
+/NFine.Web/Web.Release.config
+/DB/*.mdf
+/DB/*.ldf

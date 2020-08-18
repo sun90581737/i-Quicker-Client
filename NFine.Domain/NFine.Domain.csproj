@@ -1,0 +1,182 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{7DC886CD-B8A0-44E8-AADD-57FCB0CFECB8}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>NFine.Domain</RootNamespace>
+    <AssemblyName>NFine.Domain</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.0.0\lib\net45\EntityFramework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.0.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="MySql.Data, Version=6.9.12.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
+      <HintPath>..\packages\MySql.Data.6.9.12\lib\net45\MySql.Data.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="MySql.Data.Entity.EF6, Version=6.9.12.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
+      <HintPath>..\packages\MySql.Data.Entity.6.9.12\lib\net45\MySql.Data.Entity.EF6.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="01 Infrastructure\ICreationAudited.cs" />
+    <Compile Include="01 Infrastructure\IDeleteAudited.cs" />
+    <Compile Include="01 Infrastructure\IEntity.cs" />
+    <Compile Include="01 Infrastructure\IModificationAudited.cs" />
+    <Compile Include="03 Entity\AutomationLine\DataAcquisitionEntity.cs" />
+    <Compile Include="03 Entity\AutomationLine\RunningStateEntity.cs" />
+    <Compile Include="03 Entity\OperationMonitoring\BOCapacityLoadEntity.cs" />
+    <Compile Include="03 Entity\OperationMonitoring\CostByDepartmentEntity.cs" />
+    <Compile Include="03 Entity\OperationMonitoring\CustomerListDetailEntity.cs" />
+    <Compile Include="03 Entity\OperationMonitoring\CustomerListEntity.cs" />
+    <Compile Include="03 Entity\OperationMonitoring\DeliveryCompletionRateEntity.cs" />
+    <Compile Include="03 Entity\OperationMonitoring\EHDelayMoldListEntity.cs" />
+    <Compile Include="03 Entity\OperationMonitoring\EHDeliveryCompletionRateEntity.cs" />
+    <Compile Include="03 Entity\OperationMonitoring\EHNumberMoldsDeliveredEntity.cs" />
+    <Compile Include="03 Entity\OperationMonitoring\EHProductionScheduleEntity.cs" />
+    <Compile Include="03 Entity\OperationMonitoring\KeyCustomersEntity.cs" />
+    <Compile Include="03 Entity\OperationMonitoring\MoldMakingProgressEntity.cs" />
+    <Compile Include="03 Entity\OperationMonitoring\TotalCycleCostEntity.cs" />
+    <Compile Include="03 Entity\OperationMonitoring\UserEngineeringEntity.cs" />
+    <Compile Include="03 Entity\ProductionManage\PMHomeCapacityLoadEntity.cs" />
+    <Compile Include="03 Entity\ProductionManage\PMHomeDelayMoldEntity.cs" />
+    <Compile Include="03 Entity\ProductionManage\PMHomeJiadongRateEntity.cs" />
+    <Compile Include="03 Entity\ProductionManage\PMHomeMoldProgressEntity.cs" />
+    <Compile Include="03 Entity\ProductionManage\PMHomeOutsourcingDetailEntity.cs" />
+    <Compile Include="03 Entity\ProductionManage\PMHomeOutsourcingRateEntity.cs" />
+    <Compile Include="03 Entity\QualityOptimization\QualityOExceptionalDetailEntity.cs" />
+    <Compile Include="03 Entity\QualityOptimization\QualityOExceptionalResultsEntity.cs" />
+    <Compile Include="03 Entity\QualityOptimization\QualityOHandleExceptionalResultsEntity.cs" />
+    <Compile Include="03 Entity\QualityOptimization\QualityOPassRateTrendEntity.cs" />
+    <Compile Include="03 Entity\QualityOptimization\QualityOTeamPassRateEntity.cs" />
+    <Compile Include="03 Entity\SystemManage\AreaEntity.cs" />
+    <Compile Include="03 Entity\SystemManage\ModuleButtonEntity.cs" />
+    <Compile Include="03 Entity\SystemManage\ModuleEntity.cs" />
+    <Compile Include="03 Entity\SystemManage\RoleAuthorizeEntity.cs" />
+    <Compile Include="03 Entity\SystemManage\UserLogOnEntity.cs" />
+    <Compile Include="03 Entity\SystemManage\ItemsDetailEntity.cs" />
+    <Compile Include="03 Entity\SystemSecurity\DbBackupEntity.cs" />
+    <Compile Include="03 Entity\SystemSecurity\FilterIPEntity.cs" />
+    <Compile Include="03 Entity\SystemSecurity\LogEntity.cs" />
+    <Compile Include="02 ViewModel\AuthorizeActionModel.cs" />
+    <Compile Include="03 Entity\TeamTask\CapacityLoadEntity.cs" />
+    <Compile Include="03 Entity\TeamTask\EquipmentListEntity.cs" />
+    <Compile Include="03 Entity\TeamTask\TeamTaskEntity.cs" />
+    <Compile Include="03 Entity\TeamTask\TrendEntity.cs" />
+    <Compile Include="04 IRepository\AutomationLine\IDataAcquisitionRepository.cs" />
+    <Compile Include="04 IRepository\AutomationLine\IRunningStateRepository.cs" />
+    <Compile Include="04 IRepository\OperationMonitoring\IBOCapacityLoadRepository.cs" />
+    <Compile Include="04 IRepository\OperationMonitoring\ICostByDepartmentRepository.cs" />
+    <Compile Include="04 IRepository\OperationMonitoring\ICustomerListDetailRepository.cs" />
+    <Compile Include="04 IRepository\OperationMonitoring\ICustomerListRepository.cs" />
+    <Compile Include="04 IRepository\OperationMonitoring\IDeliveryCompletionRateRepository.cs" />
+    <Compile Include="04 IRepository\OperationMonitoring\IEHDelayMoldListRepository.cs" />
+    <Compile Include="04 IRepository\OperationMonitoring\IEHDeliveryCompletionRateRepository.cs" />
+    <Compile Include="04 IRepository\OperationMonitoring\IEHNumberMoldsDeliveredRepository.cs" />
+    <Compile Include="04 IRepository\OperationMonitoring\IEHProductionScheduleRepository.cs" />
+    <Compile Include="04 IRepository\OperationMonitoring\IKeyCustomersRepository.cs" />
+    <Compile Include="04 IRepository\OperationMonitoring\IMoldMakingProgressRepository.cs" />
+    <Compile Include="04 IRepository\OperationMonitoring\ITotalCycleCostRepository.cs" />
+    <Compile Include="04 IRepository\OperationMonitoring\IUserEngineeringRepository.cs" />
+    <Compile Include="04 IRepository\ProductionManage\IPMHomeCapacityLoadRepository.cs" />
+    <Compile Include="04 IRepository\ProductionManage\IPMHomeDelayMoldRepository.cs" />
+    <Compile Include="04 IRepository\ProductionManage\IPMHomeJiadongRateRepository.cs" />
+    <Compile Include="04 IRepository\ProductionManage\IPMHomeMoldProgressRepository.cs" />
+    <Compile Include="04 IRepository\ProductionManage\IPMHomeOutsourcingDetailRepository.cs" />
+    <Compile Include="04 IRepository\ProductionManage\IPMHomeOutsourcingRateRepository.cs" />
+    <Compile Include="04 IRepository\QualityOptimization\IQualityOExceptionalDetailRepository.cs" />
+    <Compile Include="04 IRepository\QualityOptimization\IQualityOExceptionalResultsRepository.cs" />
+    <Compile Include="04 IRepository\QualityOptimization\IQualityOHandleExceptionalResultsRepository.cs" />
+    <Compile Include="04 IRepository\QualityOptimization\IQualityOPassRateTrendRepository.cs" />
+    <Compile Include="04 IRepository\QualityOptimization\IQualityOTeamPassRateRepository.cs" />
+    <Compile Include="04 IRepository\SystemManage\IAreaRepository.cs" />
+    <Compile Include="04 IRepository\SystemManage\IItemsDetailRepository.cs" />
+    <Compile Include="04 IRepository\SystemManage\IItemsRepository.cs" />
+    <Compile Include="04 IRepository\SystemManage\IModuleButtonRepository.cs" />
+    <Compile Include="04 IRepository\SystemManage\IModuleRepository.cs" />
+    <Compile Include="04 IRepository\SystemManage\IOrganizeRepository.cs" />
+    <Compile Include="04 IRepository\SystemManage\IRoleAuthorizeRepository.cs" />
+    <Compile Include="04 IRepository\SystemManage\IRoleRepository.cs" />
+    <Compile Include="04 IRepository\SystemManage\IUserLogOnRepository.cs" />
+    <Compile Include="04 IRepository\SystemManage\IUserRepository.cs" />
+    <Compile Include="04 IRepository\SystemSecurity\IDbBackupRepository.cs" />
+    <Compile Include="04 IRepository\SystemSecurity\IFilterIPRepository.cs" />
+    <Compile Include="04 IRepository\SystemSecurity\ILogRepository.cs" />
+    <Compile Include="04 IRepository\TeamTask\ICapacityLoadRepository.cs" />
+    <Compile Include="04 IRepository\TeamTask\IEquipmentListRepository.cs" />
+    <Compile Include="04 IRepository\TeamTask\ITeamTaskRepository.cs" />
+    <Compile Include="04 IRepository\TeamTask\ITrendRepository.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="03 Entity\SystemManage\ItemsEntity.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="03 Entity\SystemManage\OrganizeEntity.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="03 Entity\SystemManage\RoleEntity.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="03 Entity\SystemManage\UserEntity.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\NFine.Code\NFine.Code.csproj">
+      <Project>{db19ce03-c307-43fe-a209-08aa4ae10e21}</Project>
+      <Name>NFine.Code</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NFine.Data\NFine.Data.csproj">
+      <Project>{f71003e8-a836-48f4-9df6-df9095cebd18}</Project>
+      <Name>NFine.Data</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

@@ -1,0 +1,486 @@
+﻿@{
+    ViewBag.Title = "数据采集";
+    Layout = "~/Views/Shared/_Index.cshtml";
+}
+<script src="~/Content/js/jquery/jquery-2.1.1.min.js"></script>
+<script src="~/Content/js/echarts/echarts-all.js"></script>
+<script src="~/Content/js/echarts/infographic.js"></script>
+<script src="~/Content/js/bootstrap/bootstrap.js"></script>
+<link href="~/Content/js/bootstrap/bootstrap.min.css" rel="stylesheet" />
+<link href="~/Content/js/pages/AdminLTE.css" rel="stylesheet" />
+<link href="~/Content/js/pages/AdminLTE.min.css" rel="stylesheet" />
+<style>
+    .container {
+        background-color: #330099;
+        border-radius: 43px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-around;
+        padding: 10px 22px;
+        height: 130px;
+        width: 15px;
+    }
+    .circle {
+        background-color: rgba(0, 0, 0, 0.3);
+        border-radius: 100%;
+        position: relative;
+        height: 40px;
+        width: 40px;
+    }
+    .circle::after {
+        border-right: 4px solid rgba(255, 255, 255, 0.6);
+        border-radius: 100%;
+        content: ' ';
+        position: absolute;
+        top: 5px;
+        left: 0px;
+        width: 30px;
+        height: 30px;
+    }
+    .circle.red {
+        background-color: #c0392b;
+        box-shadow: 0 0 20px 5px #c0392b;
+    }
+    .circle.yellow {
+        background-color: #f1c40f;
+        box-shadow: 0 0 20px 5px #f1c40f;
+    }
+    .circle.green {
+        background-color: green;
+        box-shadow: 0 0 20px 5px green;
+    }
+</style>
+
+
+<body>
+    <div class="row">
+        <section class="col-lg-6 connectedSortable" style="width:25%">
+            <div class="box box-default">
+                <div id="div1" class="box-header with-border" style="border-bottom:1px solid #d2d6de">
+                    <h6 id="a1" style="font-weight:800;font-size:13px;display:inline-block;margin:0;line-height:1"></h6>
+                    <h6 id="b1" style="float:right;font-weight:800;font-size:13px;display:inline-block;margin:0;line-height:1"></h6>
+                </div>
+                <div class="tab-content" style="height:130px">
+                    <div style="width:100px;height:100px;position:absolute;left:10%;top:10%;transform:translate(-10%,-10%);">
+                        <img id="imageId1" style="width:100px;height:100px" src="" />
+                    </div>
+                    <div style="width:50%;float:right">
+                        <div class="container">
+                            <div id="c1" class="circle" color="yellow"></div>
+                            <div id="d1" class="circle" color="green"></div>
+                            <div id="e1" class="circle" color="red"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="box-header with-border" style="height:55px;border-top:1px solid #d2d6de;border-bottom:1px solid #d2d6de">
+                    <div style="float:left;width:50%">
+                        <div style="text-align:center;font-size:13px;">今日产量(件)</div>
+                        <div id="f1" style="text-align:center;color:#00FF00; font-size:18px;font-weight:800;"></div>
+                    </div>
+                    <div style="margin-left:50%;width:auto;">
+                        <div style="text-align:center;font-size:13px;">今日稼动率(%)</div>
+                        <div id="g1" style="text-align:center;color:#00FF00; font-size:18px;font-weight:800;"></div>
+                    </div>
+                </div>
+                <div class="box-header with-border" style="height:200px; border-bottom:1px solid #d2d6de">
+                    <div style="text-align:center;font-size:13px;">主轴转速(r/min)</div>
+                    <div id="maina" style="height: 246px;"></div>
+                </div>
+                <div class="box-header with-border" style="height:200px;">
+                    <div style="text-align:center;font-size:13px;">进给速度(mm/min)</div>
+                    <div id="mainb" style="height: 246px;"></div>
+                </div>
+                <div class="box-header with-border" style="height:55px;border-top:1px solid #d2d6de;border-bottom:1px solid #d2d6de">
+                    <div style="float:left;width:33%">
+                        <div style="text-align:center;font-size:13px;">主轴倍率(%)</div>
+                        <div id="h1" style="text-align:center;color:#00FF00; font-size:18px;font-weight:800;"></div>
+                    </div>
+                    <div style="float:left;width:33%">
+                        <div style="text-align:center;font-size:13px;">进给倍率(%)</div>
+                        <div id="i1" style="text-align:center;color:#00FF00; font-size:18px;font-weight:800;"></div>
+                    </div>
+                    <div style="margin-left:50%;width:auto;">
+                        <div style="text-align:center;font-size:13px;">负载(%)</div>
+                        <div id="j1" style="text-align:center;color:#00FF00; font-size:18px;font-weight:800;"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section class="col-lg-6 connectedSortable" style="width:25%">
+            <div class="box box-default">
+                <div id="div2" class="box-header with-border" style="border-bottom:1px solid #d2d6de">
+                    <h6 id="a2" style="font-weight:800;font-size:13px;display:inline-block;margin:0;line-height:1"></h6>
+                    <h6 id="b2" style="float:right;font-weight:800;font-size:13px;display:inline-block;margin:0;line-height:1"></h6>
+                </div>
+                <div class="tab-content" style="height:130px">
+                    <div style="width:100px;height:100px;position:absolute;left:10%;top:10%;transform:translate(-10%,-10%);">
+                        <img id="imageId2" style="width:100px;height:100px" src="" />
+                    </div>
+                    <div style="width:50%;float:right">
+                        <div class="container">
+                            <div id="c2" class="circle" color="yellow"></div>
+                            <div id="d2" class="circle" color="green"></div>
+                            <div id="e2" class="circle" color="red"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="box-header with-border" style="height:55px;border-top:1px solid #d2d6de;border-bottom:1px solid #d2d6de">
+                    <div style="float:left;width:50%">
+                        <div style="text-align:center;font-size:13px;">今日产量(件)</div>
+                        <div id="f2" style="text-align:center;color:#00FF00; font-size:18px;font-weight:800;"></div>
+                    </div>
+                    <div style="margin-left:50%;width:auto;">
+                        <div style="text-align:center;font-size:13px;">今日稼动率(%)</div>
+                        <div id="g2" style="text-align:center;color:#00FF00; font-size:18px;font-weight:800;"></div>
+                    </div>
+                </div>
+                <div class="box-header with-border" style="height:200px; border-bottom:1px solid #d2d6de">
+                    <div style="text-align:center;font-size:13px;">主轴转速(r/min)</div>
+                    <div id="maina2" style="width: 100%;height: 246px;"></div>
+                </div>
+                <div class="box-header with-border" style="height:200px;">
+                    <div style="text-align:center;font-size:13px;">进给速度(mm/min)</div>
+                    <div id="mainb2" style="width: 100%;height: 246px;"></div>
+                </div>
+                <div class="box-header with-border" style="height:55px;border-top:1px solid #d2d6de;border-bottom:1px solid #d2d6de">
+                    <div style="float:left;width:33%">
+                        <div style="text-align:center;font-size:13px;">主轴倍率(%)</div>
+                        <div id="h2" style="text-align:center;color:#00FF00; font-size:18px;font-weight:800;"></div>
+                    </div>
+                    <div style="float:left;width:33%">
+                        <div style="text-align:center;font-size:13px;">进给倍率(%)</div>
+                        <div id="i2" style="text-align:center;color:#00FF00; font-size:18px;font-weight:800;"></div>
+                    </div>
+                    <div style="margin-left:50%;width:auto;">
+                        <div style="text-align:center;font-size:13px;">负载(%)</div>
+                        <div id="j2" style="text-align:center;color:#00FF00; font-size:18px;font-weight:800;"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section class="col-lg-6 connectedSortable" style="width:25%">
+            <div class="box box-default">
+                <div id="div3" class="box-header with-border" style="border-bottom:1px solid #d2d6de">
+                    <h6 id="a3" style="font-weight:800;font-size:13px;display:inline-block;margin:0;line-height:1"></h6>
+                    <h6 id="b3" style="float:right;font-weight:800;font-size:13px;display:inline-block;margin:0;line-height:1"></h6>
+                </div>
+                <div class="tab-content" style="height:130px">
+                    <div style="width:100px;height:100px;position:absolute;left:10%;top:10%;transform:translate(-10%,-10%);">
+                        <img id="imageId3" style="width:100px;height:100px" src="" />
+                    </div>
+                    <div style="width:50%;float:right">
+                        <div class="container">
+                            <div id="c3" class="circle" color="yellow"></div>
+                            <div id="d3" class="circle" color="green"></div>
+                            <div id="e3" class="circle" color="red"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="box-header with-border" style="height:55px;border-top:1px solid #d2d6de;border-bottom:1px solid #d2d6de">
+                    <div style="float:left;width:50%">
+                        <div style="text-align:center;font-size:13px;">今日产量(件)</div>
+                        <div id="f3" style="text-align:center;color:#00FF00; font-size:18px;font-weight:800;"></div>
+                    </div>
+                    <div style="margin-left:50%;width:auto;">
+                        <div style="text-align:center;font-size:13px;">今日稼动率(%)</div>
+                        <div id="g3" style="text-align:center;color:#00FF00; font-size:18px;font-weight:800;"></div>
+                    </div>
+                </div>
+                <div class="box-header with-border" style="height:200px; border-bottom:1px solid #d2d6de">
+                    <div style="text-align:center;font-size:13px;">主轴转速(r/min)</div>
+                    <div id="maina3" style="width: 100%;height: 246px;"></div>
+                </div>
+                <div class="box-header with-border" style="height:200px;">
+                    <div style="text-align:center;font-size:13px;">进给速度(mm/min)</div>
+                    <div id="mainb3" style="width: 100%;height: 246px;"></div>
+                </div>
+                <div class="box-header with-border" style="height:55px;border-top:1px solid #d2d6de;border-bottom:1px solid #d2d6de">
+                    <div style="float:left;width:33%">
+                        <div style="text-align:center;font-size:13px;">主轴倍率(%)</div>
+                        <div id="h3" style="text-align:center;color:#00FF00; font-size:18px;font-weight:800;"></div>
+                    </div>
+                    <div style="float:left;width:33%">
+                        <div style="text-align:center;font-size:13px;">进给倍率(%)</div>
+                        <div id="i3" style="text-align:center;color:#00FF00; font-size:18px;font-weight:800;"></div>
+                    </div>
+                    <div style="margin-left:50%;width:auto;">
+                        <div style="text-align:center;font-size:13px;">负载(%)</div>
+                        <div id="j3" style="text-align:center;color:#00FF00; font-size:18px;font-weight:800;"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section class="col-lg-6 connectedSortable" style="width:25%">
+            <div class="box box-default">
+                <div id="div4" class="box-header with-border" style="border-bottom:1px solid #d2d6de">
+                    <h6 id="a4" style="font-weight:800;font-size:13px;display:inline-block;margin:0;line-height:1"></h6>
+                    <h6 id="b4" style="float:right;font-weight:800;font-size:13px;display:inline-block;margin:0;line-height:1"></h6>
+                </div>
+                <div class="tab-content" style="height:130px">
+                    <div style="width:100px;height:100px;position:absolute;left:10%;top:10%;transform:translate(-10%,-10%);">
+                        <img id="imageId4" style="width:100px;height:100px" src="" />
+                    </div>
+                    <div style="width:50%;float:right">
+                        <div class="container">
+                            <div id="c4" class="circle" color="yellow"></div>
+                            <div id="d4" class="circle" color="green"></div>
+                            <div id="e4" class="circle" color="red"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="box-header with-border" style="height:55px;border-top:1px solid #d2d6de;border-bottom:1px solid #d2d6de">
+                    <div style="float:left;width:50%">
+                        <div style="text-align:center;font-size:13px;">今日产量(件)</div>
+                        <div id="f4" style="text-align:center;color:#00FF00; font-size:18px;font-weight:800;"></div>
+                    </div>
+                    <div style="margin-left:50%;width:auto;">
+                        <div style="text-align:center;font-size:13px;">今日稼动率(%)</div>
+                        <div id="g4" style="text-align:center;color:#00FF00; font-size:18px;font-weight:800;"></div>
+                    </div>
+                </div>
+                <div class="box-header with-border" style="height:200px; border-bottom:1px solid #d2d6de">
+                    <div style="text-align:center;font-size:13px;">主轴转速(r/min)</div>
+                    <div id="maina4" style="width: 100%;height: 246px;"></div>
+                </div>
+                <div class="box-header with-border" style="height:200px;">
+                    <div style="text-align:center;font-size:13px;">进给速度(mm/min)</div>
+                    <div id="mainb4" style="width: 100%;height: 246px;"></div>
+                </div>
+                <div class="box-header with-border" style="height:55px;border-top:1px solid #d2d6de;border-bottom:1px solid #d2d6de">
+                    <div style="float:left;width:33%">
+                        <div style="text-align:center;font-size:13px;">主轴倍率(%)</div>
+                        <div id="h4" style="text-align:center;color:#00FF00; font-size:18px;font-weight:800;"></div>
+                    </div>
+                    <div style="float:left;width:33%">
+                        <div style="text-align:center;font-size:13px;">进给倍率(%)</div>
+                        <div id="i4" style="text-align:center;color:#00FF00; font-size:18px;font-weight:800;"></div>
+                    </div>
+                    <div style="margin-left:50%;width:auto;">
+                        <div style="text-align:center;font-size:13px;">负载(%)</div>
+                        <div id="j4" style="text-align:center;color:#00FF00; font-size:18px;font-weight:800;"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+
+    <script>
+        $(function () {
+            LoadAllData();
+        })
+
+        function LoadAllData()
+        {
+            $.ajax({
+                async: false,
+                url: "/AutomationLine/DataAcquisition/GetDataAcquisition",
+                type: "get",
+                dataType: "json",
+                success: function (da) {
+                    $(da).each(function (index, item) {
+                        if (index == 0)
+                        {
+                            $("#div1").css({ "background-color": item.DeviceLndicatorLight});
+                            $("#a1").text(item.DeviceName);
+                            $("#b1").text(item.DeviceRunStatus);
+                            $("#imageId1").attr("src", item.DeviceUrl);
+                            if (item.DeviceLndicatorLight == "yellow") {
+                                $("#c1").css({ "background-color": "yellow" });
+                            } else if (item.DeviceLndicatorLight == "green") {
+                                $("#d1").css({ "background-color": "green" });
+                            } else if (item.DeviceLndicatorLight == "red") {
+                                $("#e1").css({ "background-color": "red" });
+                            }
+                            $("#f1").text(item.TodayOutput);
+                            $("#g1").text(item.TodayJiadong);
+                            loadSpindle("maina",item.SpindleSpeed);
+                            loadFeed("mainb", item.FeedSpeed);
+                            $("#h1").text(item.SpindleRatio);
+                            $("#i1").text(item.FeedRatio);
+                            $("#j1").text(item.LoadRatio + "%");
+                        }else if (index == 1) {
+                            $("#div2").css({ "background-color": item.DeviceLndicatorLight });
+                            $("#a2").text(item.DeviceName);
+                            $("#b2").text(item.DeviceRunStatus);
+                            $("#imageId2").attr("src", item.DeviceUrl);
+                            if (item.DeviceLndicatorLight == "yellow") {
+                                $("#c2").css({ "background-color": "yellow" });
+                            } else if (item.DeviceLndicatorLight == "green") {
+                                $("#d2").css({ "background-color": "green" });
+                            } else if (item.DeviceLndicatorLight == "red") {
+                                $("#e2").css({ "background-color": "red" });
+                            }
+                            $("#f2").text(item.TodayOutput);
+                            $("#g2").text(item.TodayJiadong);
+                            loadSpindle("maina2", item.SpindleSpeed);
+                            loadFeed("mainb2", item.FeedSpeed);
+                            $("#h2").text(item.SpindleRatio);
+                            $("#i2").text(item.FeedRatio);
+                            $("#j2").text(item.LoadRatio + "%");
+                        } else if (index == 2) {
+                            $("#div3").css({ "background-color": item.DeviceLndicatorLight });
+                            $("#a3").text(item.DeviceName);
+                            $("#b3").text(item.DeviceRunStatus);
+                            $("#imageId3").attr("src", item.DeviceUrl);
+                            if (item.DeviceLndicatorLight == "yellow") {
+                                $("#c3").css({ "background-color": "yellow" });
+                            } else if (item.DeviceLndicatorLight == "green") {
+                                $("#d3").css({ "background-color": "green" });
+                            } else if (item.DeviceLndicatorLight == "red") {
+                                $("#e3").css({ "background-color": "red" });
+                            }
+                            $("#f3").text(item.TodayOutput);
+                            $("#g3").text(item.TodayJiadong);
+                            loadSpindle("maina3", item.SpindleSpeed);
+                            loadFeed("mainb3", item.FeedSpeed);
+                            $("#h3").text(item.SpindleRatio);
+                            $("#i3").text(item.FeedRatio);
+                            $("#j3").text(item.LoadRatio + "%");
+                        } else if (index == 3) {
+                            $("#div4").css({ "background-color": item.DeviceLndicatorLight });
+                            $("#a4").text(item.DeviceName);
+                            $("#b4").text(item.DeviceRunStatus);
+                            $("#imageId4").attr("src", item.DeviceUrl);
+                            if (item.DeviceLndicatorLight == "yellow") {
+                                $("#c4").css({ "background-color": "yellow" });
+                            } else if (item.DeviceLndicatorLight == "green") {
+                                $("#d4").css({ "background-color": "green" });
+                            } else if (item.DeviceLndicatorLight == "red") {
+                                $("#e4").css({ "background-color": "red" });
+                            }
+                            $("#f4").text(item.TodayOutput);
+                            $("#g4").text(item.TodayJiadong);
+                            loadSpindle("maina4", item.SpindleSpeed);
+                            loadFeed("mainb4", item.FeedSpeed);
+                            $("#h4").text(item.SpindleRatio);
+                            $("#i4").text(item.FeedRatio);
+                            $("#j4").text(item.LoadRatio + "%");
+                        }
+                    })
+                }
+            })
+        }
+
+        function loadSpindle(divId,tempCount) {
+            var myChart = echarts.init(document.getElementById(divId));
+            option = {
+                series: [
+                    {
+                        name: '业务指标',
+                        type: 'gauge',
+                        min: 0,
+                        max: 30000,
+                        splitNumber: 10,       // 分割段数，默认为5
+                        center: ['50%', '38%'], //**调整仪表盘的位置**
+                        axisLine: {            // 坐标轴线
+                            lineStyle: {       // 属性lineStyle控制线条样式
+                                color: [[0.2, '#228b22'], [0.8, '#48b'], [1, '#ff4500']],
+                                width: 2
+                            }
+                        },
+                        axisTick: {            // 坐标轴小标记
+                            splitNumber: 10,   // 每份split细分多少段
+                            length: 10,        // 属性length控制线长
+                            lineStyle: {       // 属性lineStyle控制线条样式
+                                color: 'auto'
+                            }
+                        },
+                        axisLabel: {           // 坐标轴文本标签，详见axis.axisLabel
+                            textStyle: {       // 其余属性默认使用全局文本样式，详见TEXTSTYLE
+                                color: 'auto'
+                            }
+                        },
+                        splitLine: {           // 分隔线
+                            show: true,        // 默认显示，属性show控制显示与否
+                            length: 12,         // 属性length控制线长
+                            lineStyle: {       // 属性lineStyle（详见lineStyle）控制线条样式
+                                color: 'auto'
+                            }
+                        },
+
+                        detail: {
+                            formatter: '{value}',
+                            textStyle: {       // 其余属性默认使用全局文本样式，详见TEXTSTYLE
+                                color: 'auto',
+                                fontWeight: 'bolder',
+                                fontSize: 20
+                            }
+                        },
+                        data: [{ value: tempCount}]
+                    }
+                ]
+            };
+            myChart.setOption(option, true);
+            clearInterval(timeTicket);
+            var timeTicket = setInterval(function () {
+                //option.series[0].max = data.maxThread;
+                option.series[0].max = 30000;
+                option.series[0].data[0].value = (Math.random() * 30000).toFixed(2) - 0;
+                myChart.setOption(option, true);
+            }, 2000)
+        }
+        function loadFeed(divId, tempCount) {
+            var myChart = echarts.init(document.getElementById(divId));
+            option1 = {
+                series: [
+                    {
+                        name: '业务指标',
+                        type: 'gauge',
+                        min: 0,
+                        max: 10000,
+                        splitNumber: 10,       // 分割段数，默认为5
+                        center: ['50%', '38%'], //**调整仪表盘的位置**
+                        axisLine: {            // 坐标轴线
+                            lineStyle: {       // 属性lineStyle控制线条样式
+                                color: [[0.2, '#228b22'], [0.8, '#48b'], [1, '#ff4500']],
+                                width: 2
+                            }
+                        },
+                        axisTick: {            // 坐标轴小标记
+                            splitNumber: 10,   // 每份split细分多少段
+                            length: 10,        // 属性length控制线长
+                            lineStyle: {       // 属性lineStyle控制线条样式
+                                color: 'auto'
+                            }
+                        },
+                        axisLabel: {           // 坐标轴文本标签，详见axis.axisLabel
+                            textStyle: {       // 其余属性默认使用全局文本样式，详见TEXTSTYLE
+                                color: 'auto'
+                            }
+                        },
+                        splitLine: {           // 分隔线
+                            show: true,        // 默认显示，属性show控制显示与否
+                            length: 12,         // 属性length控制线长
+                            lineStyle: {       // 属性lineStyle（详见lineStyle）控制线条样式
+                                color: 'auto'
+                            }
+                        },
+
+                        detail: {
+                            formatter: '{value}',
+                            textStyle: {       // 其余属性默认使用全局文本样式，详见TEXTSTYLE
+                                color: 'auto',
+                                fontWeight: 'bolder',
+                                fontSize: 20
+                            }
+                        },
+                        data: [{ value: tempCount}]
+                    }
+                ]
+            };
+            myChart.setOption(option1);
+            clearInterval(timeTicket);
+            var timeTicket = setInterval(function () {
+                option1.series[0].max = 10000;
+                option1.series[0].data[0].value = (Math.random() * 10000).toFixed(2) - 0;
+                myChart.setOption(option1, true);
+            }, 2000)
+        }
+        //window.setInterval(function () {
+        //    LoadAllData();
+        //}, 1000 * 2);
+    </script>
+</body>
+

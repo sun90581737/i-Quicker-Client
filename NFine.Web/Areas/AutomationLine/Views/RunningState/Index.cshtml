@@ -1,0 +1,179 @@
+﻿@{
+    ViewBag.Title = "运行状态";
+    Layout = "~/Views/Shared/_Index.cshtml";
+}
+
+<html lang="zh-CN">
+<head>
+    <script src="~/Content/js/jquery/jquery-2.1.1.min.js"></script>
+    <script src="~/Content/js/pages/jquery.contip.js"></script>
+    @*https://blog.csdn.net/u010810136/article/details/76585424*@
+    <style type="text/css">
+        .tip {
+            z-index: 10000;
+            position: absolute;
+            opacity: 0.86;
+            background: rgb(255, 0, 0);
+            padding: 7px;
+            border-radius: 4px;
+            display: block;
+            visibility: visible;
+            color: #fff;
+        }
+        .tip-text {
+            max-width: 222px;
+        }
+        .tip-text > p {
+            margin: 0;
+            padding: 2px;
+        }
+        .tip-arrow {
+            position: absolute;
+            width: 0px;
+            height: 0px;
+            border-width: 6px;
+            border-style: solid;
+            border-color: rgb(255, 0, 0) transparent transparent;
+            border-image: initial;
+            left: 50%;
+            bottom: -12px;
+        }
+        .tip-arrows {
+            position: absolute;
+            width: 0px;
+            height: 0px;
+            border-width: 6px;
+            border-style: solid;
+            border-color: transparent transparent rgb(51, 204, 153);
+            border-image: initial;
+            left: 59.5px;
+            top: -12px;
+        }
+        .tip-1 {
+            left: 27%;
+            top: 17%;
+        }
+
+        .tip-2 {
+            left: 42%;
+            top: 6%;
+        }
+        .tip-3 {
+            left: 64%;
+            top: 5%;
+        }
+        .tip-4 {
+            left: 27%;
+            top: 67%;
+        }
+        .tip-5 {
+            left: 48%;
+            top: 63%;
+        }
+         .tip-6 {
+            left: 58%;
+            top: 56%;
+        }
+    </style>
+</head>
+<body>
+    <div id="OngridList">
+        <div class="tip tip-1">
+            <div class="tip-text"></div>
+            <span class="tip-arrow"></span>
+        </div>
+        <div class="tip tip-2">
+            <div class="tip-text"></div>
+            <span class="tip-arrow"></span>
+        </div>
+        <div class="tip tip-3">
+            <div class="tip-text"></div>
+            <span class="tip-arrow"></span>
+        </div>
+        <div class="tip tip-4">
+            <div class="tip-text"></div>
+            <span class="tip-arrows"></span>
+        </div>
+        <div class="tip tip-5">
+            <div class="tip-text"></div>
+            <span class="tip-arrows"></span>
+        </div>
+        <div class="tip tip-6">
+            <div class="tip-text"></div>
+            <span class="tip-arrows"></span>
+        </div>
+    </div>
+</body>
+</html>
+
+<script type="text/javascript">
+    // { el:"",text:"",color:""}
+    var tunningTip = function (opts) {
+        var el = ".tip-" + opts.el;
+        $(el).children("div[class='tip-text']").html(opts.text);
+        $(el).css("background", opts.color);
+        $(el).children("span[class='tip-arrow']").css("border-color", opts.color + " transparent transparent");
+    }
+    var tunningTips = function (opts) {
+        var el = ".tip-" + opts.el;
+        $(el).children("div[class='tip-text']").html(opts.text);
+        $(el).css("background", opts.color);
+        $(el).children("span[class='tip-arrows']").css("border-color", " transparent transparent" + opts.color);
+    }
+    $(function () {
+        ImgLoading(true);
+    })
+    function S() {
+        window.setInterval(function () {
+            ImgLoading(false);
+        }, 1000 * 10);
+    }
+    function ImgLoading(first) {
+        $.ajax({
+            async: false,
+            url: "/AutomationLine/RunningState/GetRunningState",
+            type: "get",
+            dataType: "json",
+            success: function (da) {
+                var item = da[0];
+                tunningTip({
+                    el: "1",
+                    text: item.Describe1,
+                    color: item.DescribeColor1,
+                });
+                tunningTip({
+                    el: "2",
+                    text: item.Describe2,
+                    color: item.DescribeColor2,
+                });
+                tunningTip({
+                    el: "3",
+                    text: item.Describe3,
+                    color: item.DescribeColor3,
+                });
+                tunningTips({
+                    el: "4",
+                    text: item.Describe4,
+                    color: item.DescribeColor4,
+                });
+                tunningTips({
+                    el: "5",
+                    text: item.Describe5,
+                    color: item.DescribeColor5,
+                });
+                tunningTips({
+                    el: "6",
+                    text: item.Describe6,
+                    color: item.DescribeColor6,
+                });
+                if (first) {  // 第一次初始化 直接取值
+                    console.log("laod...");
+                    $("#OngridList").css("background", "url(" + item.Picture_Url + ")");
+                    $("#OngridList").css({"width":"1100px","height":"690px","position": "relative","margin": "auto","background-size": "100%"});
+                    S();
+                }
+            }
+        })
+    }
+</script>
+

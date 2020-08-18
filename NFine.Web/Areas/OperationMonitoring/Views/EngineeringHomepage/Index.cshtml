@@ -1,0 +1,652 @@
+﻿@{
+    ViewBag.Title = "工程主页";
+    Layout = "~/Views/Shared/_LayoutIndex.cshtml"; //"~/Views/Shared/_Index.cshtml";
+}
+<script src="~/Content/js/echarts/4.3/echarts.js"></script>
+<script src="~/Content/js/bootstrap/bootstrap.js"></script>
+<link href="~/Content/js/bootstrap/bootstrap.min.css" rel="stylesheet" />
+<link href="~/Content/js/pages/AdminLTE.css" rel="stylesheet" />
+<link href="~/Content/js/pages/AdminLTE.min.css" rel="stylesheet" />
+<style>
+</style>
+<script>
+    window.onload = function () {
+        loadOneA();
+        loadTwoA();
+        loadTwoB();
+        loadThreeA();
+        gridList();
+        $('#layout').layout();
+        treeView();
+        gridListOn();
+    }
+    function loadOneA() {
+        $.ajax({
+            async: false,
+            url: "/OperationMonitoring/EngineeringHomepage/GetDataUserEngineeringList",
+            type: "get",
+            dataType: "json",
+            success: function (da) {
+                var item = da[0];
+                $("#a1").text(item.RealName);
+                $("#b1").text(item.CustomerAmount);
+                $("#b1").css({ "color": item.CustomerAmountColor });
+                $("#c1").text(item.DeliveryCompletionRate + "%");
+                $("#c1").css({ "color": item.DeliveryCompletionRateColor });
+                $("#d1").text(item.OnTimeDeliveryMold);
+                $("#d1").css({ "color": item.OnTimeDeliveryMoldColor });
+                $("#e1").text(item.LateDeliveryMold);
+                $("#e1").css({ "color": item.LateDeliveryMoldColor });
+                $("#f1").text(item.MoldInProcess);
+                $("#f1").css({ "color": item.MoldInProcessColor });
+                $("#g1").text(item.NormalProgress);
+                $("#g1").css({ "color": item.NormalProgressColor });
+                $("#h1").text(item.ScheduleDelay);
+                $("#h1").css({ "color": item.ScheduleDelayColor });
+            }
+        })
+    }
+    function loadTwoA() {
+        var ListMonth = new Array();
+        var ListDeliveryRate = new Array();
+
+        $.ajax({
+            async: false,
+            url: "/OperationMonitoring/EngineeringHomepage/GetDataEHDeliveryCompletionRate",
+            type: "get",
+            dataType: "json",
+            success: function (da) {
+                $(da).each(function (index, item) {
+                    ListMonth.push(item.Month);
+                    ListDeliveryRate.push(item.DeliveryRate);
+                })
+            }
+        })
+        var myChart = echarts.init(document.getElementById('chart1'));
+        var myColor = ['#45fda5', '#3ffd55', '#11da01', '#118b43', '#c3eb18', '#dfde14', '#eac736', '#ed5501', '#9d0700', '#e80c00'];
+
+        var option = {
+            backgroundColor: 'white',
+            grid: {
+                top: 10,
+                left: 15,
+                right: 15,
+                bottom: 0,
+                containLabel: true //轴上的数值
+            },
+            xAxis: {
+                type: 'category',
+                splitLine: false,
+                boundaryGap: false,
+                axisLine: {
+                    show: false,
+                    lineStyle: {
+                        color: myColor[0]
+                    }
+                },
+                axisTick: {
+                    lineStyle: {
+                        color: myColor[0]
+                    }
+                },
+                axisPointer: {
+                    label: {
+                        formatter: function (params) {
+                            return '交期达成率  ' + params.value + (params.seriesData.length ? '：' + params.seriesData[0].data : '') + '%';
+                        }
+                    }
+                },
+                data: ListMonth
+            },
+            yAxis: {
+                //type: 'value',
+                //min: 0,
+                //splitLine: false,
+                //axisLine: {
+                //    show: false
+                //},
+                //axisTick: {
+                //    show: false
+                //},
+                interval: 20,
+                axisLabel: {
+                    formatter: function (value) {
+                        return value + "%";
+                    },
+                    textStyle: {
+                        color: function (value) {
+                            //注意：当值大于999(三位)时，会以“1,000”形式，所以要做以下处理
+                            value = parseInt(value.replace(/,/g, ""));
+                            var idx = parseInt(value / 10);
+                            return myColor[idx > 9 ? 9 : idx];
+                        }
+                    }
+                },
+                type: 'value',
+                //axisLabel: {
+                //    show: true,
+                //    interval: 'auto',
+                //    formatter: '{value}%',
+                //    textStyle: {
+                //        color: myColor
+                //    }
+                //},
+                show: true
+            },
+            visualMap: {
+                show: false,
+                calculable: true,
+                min: 0,
+                max: 100,
+                inRange: {
+                    color: myColor
+                }
+            },
+            tooltip: {
+                trigger: 'none',
+                axisPointer: {
+                    type: 'cross'
+                }
+            },
+            series: [{
+                name: '交期达成率',
+                type: 'line',
+                //symbol: 'none', //这句就是去掉折线上的点的
+                smooth: true, //这句就是让曲线变平滑的
+                hoverAnimation: true,
+                data: ListDeliveryRate,
+                // 显示数值
+                itemStyle: {
+                    normal: {
+                        label: {
+                            show: true,
+                            formatter: '{c}%',
+                            position: 'bottom',
+                            color: "#505050"
+                        }
+                    }
+                }
+            }]
+        };
+        myChart.setOption(option);
+    }
+    function loadTwoB() {
+        var series = [];
+        $.ajax({
+            async: false,
+            url: "/OperationMonitoring/EngineeringHomepage/GetDataEHNumberMoldsDelivered",
+            type: "get",
+            dataType: "json",
+            success: function (da) {
+                $(da).each(function (index, item) {
+                    
+                    series.push({
+                        type: 'bar',
+                        name: item.Type,
+                        stack: '总量',
+                        barMaxWidth: 20,
+                        label: {
+                            show: true,
+                            position: 'inside'
+                        },
+                        itemStyle: {
+                            barBorderRadius: item.Type == "按期" ? [10, 0, 0, 10] : [0, 10, 10, 0] // 圆角半径, 单位px, 支持传入数组分别指定 4 个圆角半径
+                        },
+                        data: [item.Number]
+                    })
+                })
+            }
+        })
+        var myChart = echarts.init(document.getElementById('chart2b'))
+        // 监听屏幕变化自动缩放图表
+        window.addEventListener('resize', function () { myChart.resize() })
+        // 绘制图表
+        myChart.setOption({
+            color: ['#00CC99', '#FF3333'],
+            // 设置图表的位置
+            grid: {
+                x: 60, // 左间距
+                y: 0, // 上间距
+                x2: 60, // 右间距
+                y2: 40, // 下间距
+                containLabel: true // grid 区域是否包含坐标轴的刻度标签, 常用于『防止标签溢出』的场景
+            },
+            // 提示框组件
+            tooltip: {
+                trigger: 'axis', // 触发类型, axis: 坐标轴触发
+                axisPointer: {
+                    // 指示器类型  'line' 直线指示器 'shadow' 阴影指示器 'none' 无指示器
+                    // 'cross' 十字准星指示器 其实是种简写，表示启用两个正交的轴的 axisPointer 
+                    type: 'none' 
+                },
+                textStyle: {
+                    color: '#cdd3ee' // 文字颜色
+                },
+                // 提示框浮层内容格式器，支持字符串模板和回调函数两种形式 折线（区域）图、柱状（条形）图、K线图
+                // {a}（系列名称），{b}（类目值），{c}（数值）, {d}（无）
+                formatter: '{b}<br />{a0}: {c0}<br />{a1}: {c1}'//'{b}<br />{a0}: {c0}%<br />{a1}: {c1}%'
+            },
+            // 图例组件
+            legend: {
+                textStyle: { // 文本样式
+                    fontSize: 16,
+                    color: '#cdd3ee'
+                },
+                top: 13, // 定位
+                itemWidth: 10,  //图例标记的图形宽度
+                itemHeight: 10, //图例标记的图形高度
+                data: ['按期', '延期'] // 图例的数据数组
+            },
+            // X轴
+            xAxis: {
+                type: 'value', // 坐标轴类型,   'value' 数值轴，适用于连续数据
+                // 坐标轴刻度
+                axisTick: {
+                    show: false // 是否显示坐标轴刻度 默认显示
+                },
+                // 坐标轴轴线
+                axisLine: { // 是否显示坐标轴轴线 默认显示
+                    show: false // 是否显示坐标轴轴线 默认显示
+                },
+                // 坐标轴在图表区域中的分隔线
+                splitLine: {
+                    show: false // 是否显示分隔线。默认数值轴显示
+                },
+                // 坐标轴刻度标签
+                axisLabel: {
+                    show: false // 是否显示刻度标签 默认显示
+                }
+            },
+            yAxis: [
+              // 左侧Y轴
+              {
+                  // 坐标轴类型,  'category' 类目轴，适用于离散的类目数据
+                  // 为该类型时必须通过 data 设置类目数据
+                  type: 'category', 
+                  // 坐标轴刻度
+                  axisTick: {
+                      show: false // 是否显示坐标轴刻度 默认显示
+                  },
+                  // 坐标轴轴线
+                  axisLine: { // 是否显示坐标轴轴线 默认显示
+                      show: false, // 是否显示坐标轴轴线 默认显示
+                      lineStyle: { // 坐标轴线线的颜色
+                          color: '#cdd3ee'
+                      }
+                  },
+                  // 坐标轴在图表区域中的分隔线
+                  splitLine: {
+                      show: false // 是否显示分隔线。默认数值轴显示
+                  },
+                  // 坐标轴刻度标签
+                  axisLabel: {
+                      show: true, // 是否显示刻度标签 默认显示
+                      fontSize: 16, // 文字的字体大小
+                      color: '#cdd3ee', // 刻度标签文字的颜色
+                      // 使用字符串模板，模板变量为刻度默认标签 {value}
+                      formatter: '{value}'
+                  },
+                  // 类目数据，在类目轴（type: 'category'）中有效
+                  data: ['']
+              }
+            ],
+            // 系列列表
+            series: series
+            //series: [
+            //  {
+            //      type: 'bar', // 系列类型
+            //      name: '按期', // 系列名称, 用于tooltip的显示, legend 的图例筛选
+            //      // 数据堆叠，同个类目轴上系列配置相同的stack值后，后一个系列的值会在前一个系列的值上相加
+            //      stack: '总量',
+            //      barMaxWidth: 20, // 柱条的最大宽度，不设时自适应
+            //      // 图形上的文本标签
+            //      label: {
+            //          show: true,
+            //          // 标签的位置 left right bottom top inside  // 绝对的像素值 position: [10, 10] 
+            //          // 相对的百分比 position: ['50%', '50%']
+            //          position: 'inside' 
+            //      },
+            //      // 图形样式
+            //      itemStyle: {
+            //          barBorderRadius: [10, 0, 0, 10] // 圆角半径, 单位px, 支持传入数组分别指定 4 个圆角半径
+            //      },
+            //      data: [50] // 系列中的数据内容数组
+            //  },
+            //  {
+            //      type: 'bar', // 系列类型
+            //      name: '延期', // 系列名称, 用于tooltip的显示, legend 的图例筛选
+            //      // 数据堆叠，同个类目轴上系列配置相同的stack值后，后一个系列的值会在前一个系列的值上相加
+            //      stack: '总量',
+            //      barMaxWidth: 20, // 柱条的最大宽度，不设时自适应
+            //      // 图形上的文本标签
+            //      label: {
+            //          show: true,
+            //          // 标签的位置 left right bottom top inside  // 绝对的像素值 position: [10, 10] 
+            //          // 相对的百分比 position: ['50%', '50%']
+            //          position: 'inside' 
+            //      },
+            //      // 图形样式
+            //      itemStyle: {
+            //          barBorderRadius: [0, 10, 10, 0] // 圆角半径, 单位px, 支持传入数组分别指定 4 个圆角半径
+            //      },
+            //      data: [50] // 系列中的数据内容数组
+            //  }
+            //]
+        })
+    }
+    function loadThreeA() {
+        var listName = new Array();
+        var str = [];
+
+        $.ajax({
+            async: false,
+            url: "/OperationMonitoring/EngineeringHomepage/GetDataEHProductionSchedule",
+            type: "get",
+            dataType: "json",
+            success: function (da) {
+                $(da).each(function (index, item) {
+                    listName.push(item.Name);
+                    var str3 = new Object();
+                    str3.name = item.Name;
+                    str3.value = item.Number;
+                    str[index] = str3;
+                })
+            }
+        })
+
+        var myChart = echarts.init(document.getElementById('chart2a'));
+        var option = {
+            //title: {
+            //    text: '某站点用户访问来源',
+            //    subtext: '纯属虚构',
+            //    left: 'center'
+            //},
+            tooltip: {
+                trigger: 'item',
+                formatter: "{b} : ({c}%)"
+            },
+            legend: {
+                orient: 'vertical',
+                left: 'left',
+                itemWidth: 10,  //图例标记的图形宽度
+                itemHeight: 10, //图例标记的图形高度
+                data: listName//['CNC', 'EDM', 'WEDM', '车铣磨抛']
+            },
+            color: ['#FFFF99', '#CCCC66', '#00CC99', '#FF3333'],
+            series: [
+                {
+                    name: '访问来源',
+                    type: 'pie',
+                    radius: '65%',
+                    center: ['50%', '60%'],
+                    data: str//[{ value: 23, name: 'CNC' },{ value: 26, name: 'EDM' },{ value: 17, name: 'WEDM' },{ value: 34, name: '车铣磨抛' },]
+                    ,
+                    itemStyle: {  //图形样式
+                        normal: { //normal 是图形在默认状态下的样式；emphasis 是图形在高亮状态下的样式，比如在鼠标悬浮或者图例联动高亮时。
+                            label: {  //饼图图形上的文本标签
+                                show: true,  //平常不显示
+                                formatter: '{c}%',
+                                position: 'inner'
+                            },
+                            labelLine: {     //标签的视觉引导线样式
+                                show: false  //平常不显示
+                            }
+                        },
+                        emphasis: {   //normal 是图形在默认状态下的样式；emphasis 是图形在高亮状态下的样式，比如在鼠标悬浮或者图例联动高亮时。
+                            label: {  //饼图图形上的文本标签
+                                show: true,
+                                position: 'center',
+                                textStyle: {
+                                    fontSize: '20',
+                                    fontWeight: 'bold'
+                                }
+                            },
+                            itemStyle: {
+                                shadowBlur: 10,
+                                shadowOffsetX: 0,
+                                shadowColor: 'rgba(0, 0, 0, 0.5)'
+                            }
+                        }
+                    }
+                }
+            ]
+        };
+        myChart.setOption(option);
+    }
+    function gridList() {
+        var $gridList = $("#gridList");
+        $gridList.dataGrid({
+            url: "/OperationMonitoring/EngineeringHomepage/GetGridJson",
+            height: 187,
+            colModel: [
+                { label: '模具编号', name: 'MoldNo', width: 80, align: 'left' },
+                { label: '客户', name: 'Customers', width: 60, align: 'left' },
+                { label: '类型', name: 'Type', width: 60, align: 'left' },
+                {
+                    label: '计划交期', name: 'PlannedDeliveryDate', width: 80, align: 'left',
+                    formatter: "date", formatoptions: { srcformat: 'Y/m/d', newformat: 'Y/m/d' }
+                },
+                {
+                    label: '预警', name: 'EarlyWarning', width: 90, align: 'left',
+                    formatter: function (cellvalue, row, index) {
+                        return '<div style="top: 10%;left: 40%; transform: translate(-10%, -40%);"> <div style="border: 1px #000000 solid;margin:0 auto;position: relative;width:80%; height: 5px;background-color: #f9e1e3; border-radius: 3px;"><div style="white-space: pre-line;width: ' + index.EarlyWarning + '%;height: 100%;background-color:' + index.EarlyWarningColor + ';border-radius: 3px;"></div></div></div>'
+                    }
+                },
+            ],
+            //pager: "#gridPager",
+            sortname: 'MoldNo desc',
+            viewrecords: true
+        });
+    }
+    function treeView() {
+        $("#itemTree").treeview({
+            url: "/OperationMonitoring/EngineeringHomepage/GetTreeJson",
+            onnodeclick: function (item) {
+                //$("#txt_keyword").val('');
+                $('#btn_hidden').trigger("click");
+            }
+        });
+
+        $("#btn_search").click(function () {
+            $("#itemTree").treeview({
+                url: "/OperationMonitoring/EngineeringHomepage/GetTreeDetailJson?value=" + $("#txt_keyword").val(),
+                onnodeclick: function (item) {
+                    $('#btn_hidden').trigger("click");
+                }
+            });
+        });
+    }
+    function gridListOn() {
+        var $gridListOn = $("#gridListOn");
+        $gridListOn.dataGrid({
+            height: 165,
+            colModel: [
+                {
+                    label: '', name: '', width: 30, align: 'left',
+                    formatter: function (cellvalue, row, index) {
+                        if (index.Colour != "") {
+                            return '<span style="padding:1px 8px;border-radius:50%;background:' + index.Colour + ';"></span>'
+                        }
+                    }
+                },
+                { label: '模具名称', name: 'MoldName', width: 120, align: 'left' },
+                { label: '模具编号', name: 'MoldNo', width: 120, align: 'left' },
+                { label: 'TN', name: 'TN', width: 60, align: 'left' },
+                { label: '类型', name: 'MoldType', width: 60, align: 'left' },
+                { label: '状态', name: 'MoldState', width: 100, align: 'left' },
+                { label: '优先级', name: 'Priority', width: 80, align: 'left' },
+                {
+                    label: '试模日期', name: 'MoldDate', width: 120, align: 'left',
+                    formatter: "date", formatoptions: { srcformat: 'Y-m-d', newformat: 'Y-m-d' }
+                },
+                { label: '试模厂', name: 'MoldFactory', width: 80, align: 'left' },
+                { label: '模仁材质', name: 'MoldMaterial', width: 80, align: 'left' },
+                { label: '类别', name: 'Category', width: 80, align: 'left', sortable: false }
+            ]
+        });
+        $("#btn_hidden").click(function () {
+            $gridListOn.jqGrid('setGridParam', {
+                url: "/OperationMonitoring/EngineeringHomepage/GetDetailGridJson",
+                postData: { itemId: $("#itemTree").getCurrentNode().id},
+            }).trigger('reloadGrid');
+        });
+    }
+    function funOne() {
+        window.open("/OperationMonitoring/EngineeringHomepage/Form1");
+    }
+    function funTwo() {
+        window.open("/OperationMonitoring/EngineeringHomepage/Form2");
+    }
+    function funThree() {
+        window.open("/OperationMonitoring/EngineeringHomepage/Form3");
+    }
+</script>
+<body>
+    <div class="row">
+        <div>
+            <section class="col-lg-6 connectedSortable" style="width:12.5%;">
+                <div class="box box-default">
+                    <div class="box-header with-border">
+                        <h6 id="a1" style="text-align:center;font-weight:bold;font-size:17px;color:#00CC99"></h6>
+                        <h6 style="text-align:center;font-size:10px;color:#00CC99">项目工程师</h6>
+                    </div>
+                </div>
+            </section>
+            <section class="col-lg-6 connectedSortable" style="width:12.5%;">
+                <div class="box box-default">
+                    <div class="box-header with-border">
+                        <h6 id="b1" style="text-align:center;font-weight:bold;font-size:17px;"></h6>
+                        <h6 style="text-align:center;font-size:10px;color:#00CC99">负责客户数量</h6>
+                    </div>
+                </div>
+            </section>
+            <section class="col-lg-6 connectedSortable" style="width:12.5%;">
+                <div class="box box-default">
+                    <div class="box-header with-border">
+                        <h6 id="c1" style="text-align:center;font-weight:bold;font-size:17px;"></h6>
+                        <h6 style="text-align:center;font-size:10px;color:#00CC99">交期达成率(月)</h6>
+                    </div>
+                </div>
+            </section>
+            <section class="col-lg-6 connectedSortable" style="width:12.5%;">
+                <div class="box box-default">
+                    <div class="box-header with-border">
+                        <h6 id="d1" style="text-align:center;font-weight:bold;font-size:17px;"></h6>
+                        <h6 style="text-align:center;font-size:10px;color:#00CC99">按期交付模具(月)</h6>
+                    </div>
+                </div>
+            </section>
+            <section class="col-lg-6 connectedSortable" style="width:12.5%;">
+                <div class="box box-default">
+                    <div class="box-header with-border">
+                        <h6 id="e1" style="text-align:center;font-weight:bold;font-size:17px;"></h6>
+                        <h6 style="text-align:center;font-size:10px;color:#00CC99">延期交付模具(月)</h6>
+                    </div>
+                </div>
+            </section>
+            <section class="col-lg-6 connectedSortable" style="width:12.5%;">
+                <div class="box box-default">
+                    <div class="box-header with-border">
+                        <h6 id="f1" style="text-align:center;font-weight:bold;font-size:17px;"></h6>
+                        <h6 style="text-align:center;font-size:10px;color:#00CC99">在制模具</h6>
+                    </div>
+                </div>
+            </section>
+            <section class="col-lg-6 connectedSortable" style="width:12.5%;">
+                <div class="box box-default">
+                    <div class="box-header with-border">
+                        <h6 id="g1" style="text-align:center;font-weight:bold;font-size:17px;"></h6>
+                        <h6 style="text-align:center;font-size:10px;color:#00CC99">进度正常</h6>
+                    </div>
+                </div>
+            </section>
+            <section class="col-lg-6 connectedSortable" style="width:12%;">
+                <div class="box box-default">
+                    <div class="box-header with-border">
+                        <h6 id="h1" style="text-align:center;font-weight:bold;font-size:17px;"></h6>
+                        <h6 style="text-align:center;font-size:10px;color:#00CC99">进度延误</h6>
+                    </div>
+                </div>
+            </section>
+        </div>
+        <div>
+            <section class="col-lg-6 connectedSortable" style="width:50%">
+                <div class="box box-default">
+                    <div class="box-header with-border">
+                        <h4 class="box-title">交期达成率</h4>
+                        <div class="box-tools pull-right">
+                            <button type="button" onclick="funOne()" class="btn btn-box-tool"><i class="fa fa-expand"></i></button>
+                        </div>
+                    </div>
+                    <div class="tab-content" style="height:240px;">
+                        <div style="height:150px">
+                            <div style="text-align:center;font-size:13px;">交期达成率趋势</div>
+                            <div id="chart1" style="height:130px;"></div>
+                        </div>
+                        <div style="height:150px;">
+                            <div style="text-align:center;font-size:13px;">上月交付模具数量</div>
+                            <div id="chart2b" style="height:150px;"></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <section class="col-lg-6 connectedSortable" style="width:50%;">
+                <div class="box box-default">
+                    <div class="box-header with-border">
+                        <h4 class="box-title">在制进度正常、延误比例</h4>
+                        <div class="box-tools pull-right">
+                            <button type="button" onclick="funTwo()" class="btn btn-box-tool"><i class="fa fa-expand"></i></button>
+                        </div>
+                    </div>
+                    <div class="tab-content" style="height:240px;">
+                        <div style="float:left;width:35%">
+                            <div style="text-align:center;font-size:13px;">生产进度</div>
+                            <div id="chart2a" style="height:220px; "></div>
+                        </div>
+                        <div class="gridPanel" style="margin-left:35%;">
+                            <div style="text-align:center;font-size:13px;">延期模具列表</div>
+                            <table id="gridList"></table>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+        <div>
+            <section class="col-lg-6 connectedSortable" style="width:100%;">
+                <div class="box box-default">
+                    <div class="box-header with-border">
+                        <h4 class="box-title">客户清单</h4>
+                        <div class="box-tools pull-right">
+                            <button type="button" onclick="funThree()" class="btn btn-box-tool"><i class="fa fa-expand"></i></button>
+                        </div>
+                    </div>
+                    <div class="ui-layout" id="layout" style="height: 215px; ">
+                        <div class="ui-layout-west">
+                            <div class="search">
+                                <table>
+                                    <tr>
+                                        <td>
+                                            <div class="input-group">
+                                                <input id="txt_keyword" type="text" class="form-control" placeholder="搜索" style="width: 138px;box-shadow: none;height: 29px;line-height: 29px;padding-top: 0px;padding-bottom: 0px;padding-right: 0px;padding-left: 7px;resize: none;">
+                                                <span class="input-group-btn">
+                                                    <button id="btn_search" type="button" class="btn  btn-primary" style="padding: 0px 0px;font-size: 14px;height: 29px;min-width: 29px;"><i class="fa fa-search"></i></button>
+                                                    <button id="btn_hidden" type="button" style="visibility: hidden;"></button>
+                                                </span>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <div id="itemTree"></div>
+                        </div>
+                        <div class="ui-layout-center" >
+                            <div class="gridPanel">
+                                <table id="gridListOn"></table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+</body>
