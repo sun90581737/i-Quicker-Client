@@ -15,9 +15,9 @@
         border-collapse: separate;
     }
 
-        div.ui-jqgrid-view table.ui-jqgrid-btable td {
-            border-left-style: none;
-        }
+    div.ui-jqgrid-view table.ui-jqgrid-btable td {
+        border-left-style: none;
+    }
 
     div.ui-jqgrid-view table.ui-jqgrid-htable {
         border-style: none;
@@ -28,6 +28,14 @@
     div.ui-jqgrid-view table.ui-jqgrid-btable th {
         border-left-style: none;
     }
+
+   /*.ui-jqgrid .ui-jqgrid-title{background-color:red;}*/    /*修改grid标题的字体大小*/     
+   /*.ui-jqgrid-sortable {background:red;}*/   /*修改列名的字体大小*/  
+   /*.ui-jqgrid tr.jqgrow td {background:red;}*/ /*修改表格内容字体*/
+    /*th.ui-th-column div{
+	    background:red;
+    }*/
+
 </style>
 <script>
     window.onload = function () {
@@ -373,7 +381,7 @@
                     formatter: "date", formatoptions: { srcformat: 'Y/m/d', newformat: 'Y/m/d' }
                 },
                 {
-                    label: '预警', name: 'EarlyWarning', width: 85, align: 'center',
+                    label: '预警', name: 'EarlyWarning', width: 100, align: 'center',
                     formatter: function (cellvalue, row, index) {
                         //return '<div style="top: 10%;left: 40%; transform: translate(-10%, -40%);"> <div style="border: 1px #000000 solid;margin:0 auto;position: relative;width:80%; height: 5px;background-color: #f9e1e3; border-radius: 3px;"><div style="white-space: pre-line;width: ' + index.EarlyWarning + '%;height: 100%;background-color:' + index.EarlyWarningColor + ';border-radius: 3px;"></div></div></div>'
                         //提供三个值改变宽度，颜色忽略
@@ -499,7 +507,7 @@
 <body>
     <div class="row">
         <div>
-            <section class="col-lg-6 connectedSortable" style="width:12%;background: url('../../../../Content/js/pages/img/gcbj.png') 0 0 / 100% 100% no-repeat;background-size:150px 80px;margin : 10px 2px 0px 20px;">
+            <section class="col-lg-6 connectedSortable" style="width:12%;background: url('../../../../Content/js/pages/img/gcbj.png') 0 0 / 100% 100% no-repeat;background-size:150px 80px;margin : 10px 2px 0px 25px;">
                 <div class="box box-default">
                     <div class="" style="display: block;top: 12px;position: relative;">
                         <h6 style="text-align:center;font-size:10px;color:#808080">项目工程师</h6>
@@ -562,7 +570,7 @@
                     </div>
                 </div>
             </section>
-            <section class="col-lg-6 connectedSortable" style="width:12%;background: url('../../../../Content/js/pages/img/gcbj.png') 0 0 / 100% 100% no-repeat;background-size:150px 80px;margin : 10px 2px 0px 0px;">
+            <section class="col-lg-6 connectedSortable" style="width:11.2%;background: url('../../../../Content/js/pages/img/gcbj.png') 0 0 / 100% 100% no-repeat;background-size:150px 80px;margin : 10px 2px 0px 0px;">
                 <div class="box box-default">
                     <div class="" style="display: block;top: 12px;position: relative;">
                         <h6 style="text-align:center;font-size:10px;color:#808080">进度延误</h6>
@@ -615,10 +623,10 @@
             </section>
         </div>
         <div>
-            <section class="col-lg-6 connectedSortable" style="width:96.5%;background: url('../../../../Content/js/pages/img/BusinessOverview03.png') 0 0 / 100% 100% no-repeat;position: relative;  margin : 0px 20px 0px 20px;">
+            <section class="col-lg-6 connectedSortable" style="width:97%;background: url('../../../../Content/js/pages/img/BusinessOverview03.png') 0 0 / 100% 100% no-repeat;position: relative;  margin : 0px 20px 0px 20px;">
                 <div class="box box-default">
                     <div class="box-header with-border">
-                        <div class="box-title" style="color:#474242;font-size:16px;font-weight:700;">客户清单</div>
+                        <div style="text-align:center;font-size:16px;color:#474242;font-weight:700;">客户清单</div>
                         @*<div style="float:right">
                                 <select id="S1" onchange="SelectRelation(this)"><option value="0">---请选择客户---</option></select> : <select id="S2" onchange="SelectOpt(this)"><option value="0">---请选择订单---</option></select>
                             </div>*@
