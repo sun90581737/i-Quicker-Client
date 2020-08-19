@@ -8,11 +8,14 @@ namespace NFine.Domain._03_Entity.OperationMonitoring
 {
     public class CustomerListEntity : IEntity<CustomerListEntity>
     {
-        public int Id { get; set; }	
+        public int Id { get; set; }
         public int ParentId { get; set; }
         public string EnCode { get; set; }
         public string FullName { get; set; }
-        public DateTime CreationTime { get; set; }	
+        public string OrderName { get; set; }
+        public string OrderDate { get; set; }
+        public string OrderStatus { get; set; }
+        public DateTime CreationTime { get; set; }
         public int IsEffective { get; set; }
     }
 }
