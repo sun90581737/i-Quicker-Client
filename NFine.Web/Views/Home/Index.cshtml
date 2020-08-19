@@ -70,10 +70,21 @@
                         </nav>
                         @*欢迎首页*@
 
-                        <button class="roll-nav roll-right tabRight" style="right:215px;">
-                            <i class="fa fa-forward" style="margin-left: 3px;"></i>
+                        <div class="roll-nav roll-right" style="right:187px;">
+                            <ul class="nav navbar-nav pull-right" >
+                                <li class="dropdown hidden-xs" style="left:14px;top:3px;">
+                                    <a class="btn dropdown-toggle" data-toggle="dropdown">
+                                        <i class="fa fa-bell"></i>
+                                        <span class="count">8</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <button class="roll-nav roll-right tabRight" style="width:53px;">
+                            <i class="fa fa-forward" style="margin-left: 0px;"></i>
                         </button>
-                        <div class="btn-group roll-nav roll-right" style="right:130px">
+                        @*<div class="btn-group roll-nav roll-right" style="right:130px">
                             <button class="dropdown tabClose" data-toggle="dropdown">
                                 页签操作<i class="fa fa-caret-down" style="padding-left: 3px;"></i>
                             </button>
@@ -83,12 +94,12 @@
                                 <li><a class="tabCloseAll" href="javascript:void();">全部关闭</a></li>
                                 <li><a class="tabCloseOther" href="javascript:void();">除此之外全部关闭</a></li>
                             </ul>
-                        </div>
+                        </div>*@
                         <button class="roll-nav roll-right fullscreen" style="right:90px;"><i class="fa fa-arrows-alt"></i></button>
                         @*最大化*@
 
 
-                        <ul class="nav navbar-nav pull-left roll-right " style="position:absolute;top:0px;right:0;">
+                        <ul class="nav navbar-nav pull-left roll-right " style="position:absolute;top:0px;right:2px;">
                             <li class="nav navbar-nav pull-right " style="margin:0px;">
                                 <a href="#" class="dropdown" data-toggle="dropdown">
                                     <img src="~/Content/img/samples/scarlet-159.png" alt="" width="20" height="20" />
@@ -96,9 +107,9 @@
                                 </a>
                                 <ul class="dropdown-menu pull-right">
                                     <li><a class="menuItem" data-id="userInfo" href="/SystemManage/User/Info"><i class="fa fa-user"></i>个人信息</a></li>
-                                    <li><a href="javascript:void();"><i class="fa fa-inbox"></i>我的信箱</a></li>
+                                    @*<li><a href="javascript:void();"><i class="fa fa-inbox"></i>我的信箱</a></li>*@
                                     <li><a href="javascript:void();" onclick="layer.msg('浏览器缓存清除成功');"><i class="fa fa-trash-o"></i>清空缓存</a></li>
-                                    <li><a href="javascript:void();"><i class="fa fa-paint-brush"></i>皮肤设置</a></li>
+                                    @*<li><a href="javascript:void();"><i class="fa fa-paint-brush"></i>皮肤设置</a></li>*@
                                     <li class="divider"></li>
                                     <li><a href="~/Login/OutLogin"><i class="ace-icon fa fa-power-off"></i>安全退出</a></li>
                                 </ul>
