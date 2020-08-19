@@ -49,19 +49,19 @@
                 var item = da[0];
                 $("#a1").text(item.RealName);
                 $("#b1").text(item.CustomerAmount);
-                $("#b1").css({ "color": item.CustomerAmountColor });
+                //$("#b1").css({ "color": item.CustomerAmountColor });
                 $("#c1").text(item.DeliveryCompletionRate + "%");
-                $("#c1").css({ "color": item.DeliveryCompletionRateColor });
+                //$("#c1").css({ "color": item.DeliveryCompletionRateColor });
                 $("#d1").text(item.OnTimeDeliveryMold);
-                $("#d1").css({ "color": item.OnTimeDeliveryMoldColor });
+                //$("#d1").css({ "color": item.OnTimeDeliveryMoldColor });
                 $("#e1").text(item.LateDeliveryMold);
-                $("#e1").css({ "color": item.LateDeliveryMoldColor });
+                //$("#e1").css({ "color": item.LateDeliveryMoldColor });
                 $("#f1").text(item.MoldInProcess);
-                $("#f1").css({ "color": item.MoldInProcessColor });
+                //$("#f1").css({ "color": item.MoldInProcessColor });
                 $("#g1").text(item.NormalProgress);
-                $("#g1").css({ "color": item.NormalProgressColor });
+                //$("#g1").css({ "color": item.NormalProgressColor });
                 $("#h1").text(item.ScheduleDelay);
-                $("#h1").css({ "color": item.ScheduleDelayColor });
+                //$("#h1").css({ "color": item.ScheduleDelayColor });
             }
         })
     }
@@ -117,7 +117,7 @@
                 axisLine: {
                     show: false,
                     lineStyle: {
-                        color: '#0be3fb',
+                        color: '#808080',
 
                     }
                 },
@@ -138,7 +138,7 @@
                 axisLine: {
                     show: false,
                     lineStyle: {
-                        color: '#0be3fb'
+                        color: '#f2961d'
                     }
                 },
                 splitLine: {
@@ -156,7 +156,7 @@
                     },
                     show: true,
                     textStyle: {
-                        color: '#0be3fb'
+                        color: '#f2961d'
                     }
                 },
             }],
@@ -169,18 +169,18 @@
                             color: new echarts.graphic.LinearGradient(
                                     0, 0, 0, 1,
                                     [
-                                        { offset: 0, color: '#34d0e9' },
-                                        { offset: 0.5, color: '#0a3d70' },
-                                        { offset: 1, color: 'transparent' }
+                                        { offset: 0, color: '#f28938' },
+                                        { offset: 0.5, color: '#ffba86' },
+                                        { offset: 1, color: '#fefefe' }
                                     ]
                             )
                         }
                     },
                     itemStyle: {
                         normal: {
-                            color: '#00ffff', //改变折线点的颜色
+                            color: '#f28938', //改变折线点的颜色
                             lineStyle: {
-                                color: '#00ffff' //改变折线颜色
+                                color: '#f28938' //改变折线颜色
                             }
                         }
                     },
@@ -220,7 +220,7 @@
                 top: '50%',
                 textStyle: {
                     fontSize: 22,
-                    color: '#fff',
+                    color: '#808080',
                     fontWeight: 'normal'
                 }
             },
@@ -237,7 +237,7 @@
                 left: 'center',
                 data: listName,
                 textStyle: {    //图例文字的样式
-                    color: '#ffffff',  //文字颜色
+                    color: '#000000',  //文字颜色
                     fontSize: 12    //文字大小
                 }
             },
@@ -254,20 +254,20 @@
                             font: {
                                 fontSize: 14,
                                 padding: [5, 0],
-                                color: '#fff'
+                                color: '#808080'
                             },
                             hr: {
                                 height: 0,
                                 borderWidth: 1,
                                 width: '100%',
-                                borderColor: '#fff'
+                                borderColor: '#808080'
                             }
                         }
                     },
                 },
                 labelLine: {
                     lineStyle: {
-                        color: '#fff'
+                        color: '#808080'
                     }
                 },
                 emphasis: {
@@ -314,7 +314,7 @@
                 left: 'center',
                 data: listName,
                 textStyle: {    //图例文字的样式
-                    color: '#ffffff',  //文字颜色
+                    color: '#000000',  //文字颜色
                     fontSize: 12    //文字大小
                 }
             },
@@ -502,8 +502,8 @@
             <section class="col-lg-6 connectedSortable" style="width:12%;background: url('../../../../Content/js/pages/img/gcbj.png') 0 0 / 100% 100% no-repeat;background-size:150px 80px;margin : 10px 2px 0px 20px;">
                 <div class="box box-default">
                     <div class="" style="display: block;top: 12px;position: relative;">
-                        <h6 style="text-align:center;font-size:10px;color:#fff">项目工程师</h6>
-                        <h6 id="a1" style="text-align:center;font-weight:bold;font-size:14px;color:#0ce7ff"></h6>
+                        <h6 style="text-align:center;font-size:10px;color:#808080">项目工程师</h6>
+                        <h6 id="a1" style="text-align:center;font-weight:bold;font-size:14px;color:#000000"></h6>
                         <img src="../../../../Content/js/pages/img/OM/01.png" style="width:40px;height:40px;position: absolute;left:-7px;top:0px;background: url('../../../../Content/js/pages/img/OM/01.png') 0 0 / 100% 100% no-repeat;" />
                     </div>
                 </div>
@@ -511,8 +511,8 @@
             <section class="col-lg-6 connectedSortable" style="width:12%;background: url('../../../../Content/js/pages/img/gcbj.png') 0 0 / 100% 100% no-repeat;background-size:150px 80px;margin : 10px 2px 0px 0px;">
                 <div class="box box-default">
                     <div class="" style="display: block;top: 12px;position: relative;">
-                        <h6 style="text-align:center;font-size:10px;color:#fff">负责客户数量</h6>
-                        <h6 id="b1" style="text-align:center;font-weight:bold;font-size:17px;"></h6>
+                        <h6 style="text-align:center;font-size:10px;color:#808080">负责客户数量</h6>
+                        <h6 id="b1" style="text-align:center;font-weight:bold;font-size:17px;color:#000000"></h6>
                         <img src="../../../../Content/js/pages/img/OM/02.png" style="width:40px;height:40px;position: absolute;left:-7px;top:0px;background: url('../../../../Content/js/pages/img/OM/02.png') 0 0 / 100% 100% no-repeat;" />
                     </div>
                 </div>
@@ -520,8 +520,8 @@
             <section class="col-lg-6 connectedSortable" style="width:12%;background: url('../../../../Content/js/pages/img/gcbj.png') 0 0 / 100% 100% no-repeat;background-size:150px 80px;margin : 10px 2px 0px 0px;">
                 <div class="box box-default">
                     <div class="" style="display: block;top: 12px;position: relative;">
-                        <h6 style="text-align:center;font-size:10px;color:#fff">交期达成率</h6>
-                        <h6 id="c1" style="text-align:center;font-weight:bold;font-size:17px;"></h6>
+                        <h6 style="text-align:center;font-size:10px;color:#808080">交期达成率</h6>
+                        <h6 id="c1" style="text-align:center;font-weight:bold;font-size:17px;color:#000000"></h6>
                         <img src="../../../../Content/js/pages/img/OM/03.png" style="width:40px;height:40px;position: absolute;left:-7px;top:0px;background: url('../../../../Content/js/pages/img/OM/03.png') 0 0 / 100% 100% no-repeat;" />
                     </div>
                 </div>
@@ -529,8 +529,8 @@
             <section class="col-lg-6 connectedSortable" style="width:12%;background: url('../../../../Content/js/pages/img/gcbj.png') 0 0 / 100% 100% no-repeat;background-size:150px 80px;margin : 10px 2px 0px 0px;">
                 <div class="box box-default">
                     <div class="" style="display: block;top: 12px;position: relative;">
-                        <h6 style="text-align:center;font-size:10px;color:#fff">本月按期交付模具</h6>
-                        <h6 id="d1" style="text-align:center;font-weight:bold;font-size:17px;"></h6>
+                        <h6 style="text-align:center;font-size:10px;color:#808080">本月按期交付模具</h6>
+                        <h6 id="d1" style="text-align:center;font-weight:bold;font-size:17px;color:#000000"></h6>
                         <img src="../../../../Content/js/pages/img/OM/04.png" style="width:40px;height:40px;position: absolute;left:-7px;top:0px;background: url('../../../../Content/js/pages/img/OM/04.png') 0 0 / 100% 100% no-repeat;" />
                     </div>
                 </div>
@@ -538,8 +538,8 @@
             <section class="col-lg-6 connectedSortable" style="width:12%;background: url('../../../../Content/js/pages/img/gcbj.png') 0 0 / 100% 100% no-repeat;background-size:150px 80px;margin : 10px 2px 0px 0px;">
                 <div class="box box-default">
                     <div class="" style="display: block;top: 12px;position: relative;">
-                        <h6 style="text-align:center;font-size:10px;color:#fff">本月延期交付模具</h6>
-                        <h6 id="e1" style="text-align:center;font-weight:bold;font-size:17px;"></h6>
+                        <h6 style="text-align:center;font-size:10px;color:#808080">本月延期交付模具</h6>
+                        <h6 id="e1" style="text-align:center;font-weight:bold;font-size:17px;color:#000000"></h6>
                         <img src="../../../../Content/js/pages/img/OM/05.png" style="width:40px;height:40px;position: absolute;left:-7px;top:0px;background: url('../../../../Content/js/pages/img/OM/05.png') 0 0 / 100% 100% no-repeat;" />
                     </div>
                 </div>
@@ -547,8 +547,8 @@
             <section class="col-lg-6 connectedSortable" style="width:12%;background: url('../../../../Content/js/pages/img/gcbj.png') 0 0 / 100% 100% no-repeat;background-size:150px 80px;margin : 10px 2px 0px 0px;">
                 <div class="box box-default">
                     <div class="" style="display: block;top: 12px;position: relative;">
-                        <h6 style="text-align:center;font-size:10px;color:#fff">在制模具/个</h6>
-                        <h6 id="f1" style="text-align:center;font-weight:bold;font-size:17px;"></h6>
+                        <h6 style="text-align:center;font-size:10px;color:#808080">在制模具/个</h6>
+                        <h6 id="f1" style="text-align:center;font-weight:bold;font-size:17px;color:#000000"></h6>
                         <img src="../../../../Content/js/pages/img/OM/06.png" style="width:40px;height:40px;position: absolute;left:-7px;top:0px;background: url('../../../../Content/js/pages/img/OM/06.png') 0 0 / 100% 100% no-repeat;" />
                     </div>
                 </div>
@@ -556,8 +556,8 @@
             <section class="col-lg-6 connectedSortable" style="width:12%;background: url('../../../../Content/js/pages/img/gcbj.png') 0 0 / 100% 100% no-repeat;background-size:150px 80px;margin : 10px 2px 0px 0px;">
                 <div class="box box-default">
                     <div class="" style="display: block;top: 12px;position: relative;">
-                        <h6 style="text-align:center;font-size:10px;color:#fff">进度正常</h6>
-                        <h6 id="g1" style="text-align:center;font-weight:bold;font-size:17px;"></h6>
+                        <h6 style="text-align:center;font-size:10px;color:#808080">进度正常</h6>
+                        <h6 id="g1" style="text-align:center;font-weight:bold;font-size:17px;color:#000000"></h6>
                         <img src="../../../../Content/js/pages/img/OM/07.png" style="width:40px;height:40px;position: absolute;left:-7px;top:0px;background: url('../../../../Content/js/pages/img/OM/07.png') 0 0 / 100% 100% no-repeat;" />
                     </div>
                 </div>
@@ -565,8 +565,8 @@
             <section class="col-lg-6 connectedSortable" style="width:12%;background: url('../../../../Content/js/pages/img/gcbj.png') 0 0 / 100% 100% no-repeat;background-size:150px 80px;margin : 10px 2px 0px 0px;">
                 <div class="box box-default">
                     <div class="" style="display: block;top: 12px;position: relative;">
-                        <h6 style="text-align:center;font-size:10px;color:#fff">进度延误</h6>
-                        <h6 id="h1" style="text-align:center;font-weight:bold;font-size:17px;"></h6>
+                        <h6 style="text-align:center;font-size:10px;color:#808080">进度延误</h6>
+                        <h6 id="h1" style="text-align:center;font-weight:bold;font-size:17px;color:#000000"></h6>
                         <img src="../../../../Content/js/pages/img/OM/08.png" style="width:40px;height:40px;position: absolute;left:-7px;top:0px;background: url('../../../../Content/js/pages/img/OM/08.png') 0 0 / 100% 100% no-repeat;" />
                     </div>
                 </div>
@@ -576,18 +576,18 @@
             <section class="col-lg-6 connectedSortable" style="top:-8px; width:48%;background: url('../../../../Content/js/pages/img/BusinessOverview02.png') 0 0 / 100% 100% no-repeat;position: relative;  margin : 0px 5px 5px 25px;">
                 <div class="box box-default">
                     <div class="box-header with-border">
-                        <div class="box-title" style="color:#ffffff;font-size:16px;font-weight:700;">交期达成率<img src="../../../../Content/js/pages/img/head.png" style="width:325px;height:12px;position: relative;margin-top:-1px;background: url('../../../../Content/js/pages/img/head.png') 0 0 / 100% 100% no-repeat;" /></div>
+                        <div class="box-title" style="color:#474242;font-size:16px;font-weight:700;">交期达成率</div>
                         @*<div class="box-tools pull-right">
                                 <button type="button" onclick="funOne()" class="btn btn-box-tool"><i class="fa fa-expand"></i></button>
                             </div>*@
                     </div>
                     <div class="tab-content" style="height:240px;">
                         <div style="float:left;width:40%">
-                            <div style="text-align:center;font-size:13px;color:#ffffff;">上月交付模具数量</div>
+                            <div style="text-align:center;font-size:13px;color:#808080;">上月交付模具数量</div>
                             <div id="chart2b" style="height:200px;"></div>
                         </div>
                         <div style="margin-left:40%;">
-                            <div style="text-align:center;font-size:13px;color:#ffffff;">交期达成率趋势</div>
+                            <div style="text-align:center;font-size:13px;color:#808080;">交期达成率趋势</div>
                             <div id="chart1" style="height:240px;"></div>@*width:450px;*@
                         </div>
                     </div>
@@ -596,18 +596,18 @@
             <section class="col-lg-6 connectedSortable" style="top:-8px;width:48%;background: url('../../../../Content/js/pages/img/BusinessOverview02.png') 0 0 / 100% 100% no-repeat;position: relative;  margin : 0px 5px 5px 0px;">
                 <div class="box box-default">
                     <div class="box-header with-border">
-                        <div class="box-title" style="color:#ffffff;font-size:16px;font-weight:700;">在制进度正常、延误比例<img src="../../../../Content/js/pages/img/head.png" style="width:325px;height:12px;position: relative;margin-top:-1px;background: url('../../../../Content/js/pages/img/head.png') 0 0 / 100% 100% no-repeat;" /></div>
+                        <div class="box-title" style="color:#474242;font-size:16px;font-weight:700;">在制进度正常、延误比例</div>
                         @*<div class="box-tools pull-right">
                                 <button type="button" onclick="funTwo()" class="btn btn-box-tool"><i class="fa fa-expand"></i></button>
                             </div>*@
                     </div>
                     <div class="tab-content" style="height:240px;">
                         <div style="float:left;width:38%">
-                            <div style="text-align:center;font-size:13px;color:#ffffff;">生产进度</div>
+                            <div style="text-align:center;font-size:13px;color:#808080;">生产进度</div>
                             <div id="chart2a" style="height:220px; "></div>
                         </div>
                         <div class="gridPanel" style="margin-left:38%;">
-                            <div style="text-align:center;font-size:13px;color:#ffffff;">延期模具列表</div>
+                            <div style="text-align:center;font-size:13px;color:#808080;">延期模具列表</div>
                             <table id="gridList"></table>
                         </div>
                     </div>
@@ -615,10 +615,10 @@
             </section>
         </div>
         <div>
-            <section class="col-lg-6 connectedSortable" style="width:96.5%;background: url('../../../../Content/js/pages/img/BusinessOverview02.png') 0 0 / 100% 100% no-repeat;position: relative;  margin : 0px 20px 0px 20px;">
+            <section class="col-lg-6 connectedSortable" style="width:96.5%;background: url('../../../../Content/js/pages/img/BusinessOverview03.png') 0 0 / 100% 100% no-repeat;position: relative;  margin : 0px 20px 0px 20px;">
                 <div class="box box-default">
                     <div class="box-header with-border">
-                        <div class="box-title" style="color:#ffffff;font-size:16px;font-weight:700;">客户清单<img src="../../../../Content/js/pages/img/head.png" style="width:325px;height:12px;position: relative;margin-top:-1px;background: url('../../../../Content/js/pages/img/head.png') 0 0 / 100% 100% no-repeat;" /></div>
+                        <div class="box-title" style="color:#474242;font-size:16px;font-weight:700;">客户清单</div>
                         @*<div style="float:right">
                                 <select id="S1" onchange="SelectRelation(this)"><option value="0">---请选择客户---</option></select> : <select id="S2" onchange="SelectOpt(this)"><option value="0">---请选择订单---</option></select>
                             </div>*@
