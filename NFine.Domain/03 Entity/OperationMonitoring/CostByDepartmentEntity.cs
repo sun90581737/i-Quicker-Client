@@ -10,8 +10,9 @@ namespace NFine.Domain._03_Entity.OperationMonitoring
     {
         public int? id { get; set; }
         public string Name { get; set; }
-        public int? Cost { get; set; }
+        public double Cost { get; set; }
         public int? PrType { get; set; }
+        public DateTime? AcctDate { get; set; }
         public DateTime? CreationTime { get; set; }
         public int? IsEffective { get; set; }
     }
