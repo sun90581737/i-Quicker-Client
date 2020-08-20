@@ -4,7 +4,17 @@
 }
 <script src="~/Content/js/echarts/4.3/echarts.js"></script>
 <link href="~/Content/js/pages/AdminLTE.css" rel="stylesheet" />
-<link href="~/Content/js/pages/AdminLTE.min.css" rel="stylesheet" />
+@*<link href="~/Content/js/pages/AdminLTE.min.css" rel="stylesheet" />*@
+<style>
+    #gview_gridList table[aria-labelledby="gbox_gridList"] th.ui-th-ltr {
+        background: red;
+        color: #fff;
+    }
+
+    #gridList, .ui-th-ltr, th.ui-th-ltr {
+        background: #fcead2;
+    }
+</style>
 <script>
     window.onload = function () {
         loadThreeA();
@@ -32,30 +42,29 @@
 
         var myChart = echarts.init(document.getElementById('chart2a'));
         var option = {
-            //title: {
-            //    text: '某站点用户访问来源',
-            //    subtext: '纯属虚构',
-            //    left: 'center'
-            //},
             tooltip: {
                 trigger: 'item',
                 formatter: "{b} : ({c}%)"
             },
             legend: {
-                orient: 'vertical',
-                left: 'left',
                 itemWidth: 10,  //图例标记的图形宽度
                 itemHeight: 10, //图例标记的图形高度
-                data: listName//['CNC', 'EDM', 'WEDM', '车铣磨抛']
+                bottom: 20,
+                left: 'center',
+                data: listName,
+                textStyle: {    //图例文字的样式
+                    color: '#000000',  //文字颜色
+                    fontSize: 12    //文字大小
+                }
             },
-            color: ['#FFFF99', '#CCCC66', '#00CC99', '#FF3333'],
+            color: ['#f28533', '#00ffff', '#ff6239'],
             series: [
                 {
                     name: '访问来源',
                     type: 'pie',
                     radius: '65%',
-                    center: ['50%', '50%'],
-                    data: str//[{ value: 23, name: 'CNC' },{ value: 26, name: 'EDM' },{ value: 17, name: 'WEDM' },{ value: 34, name: '车铣磨抛' },]
+                    center: ['50%', '40%'],
+                    data: str
                     ,
                     itemStyle: {  //图形样式
                         normal: { //normal 是图形在默认状态下的样式；emphasis 是图形在高亮状态下的样式，比如在鼠标悬浮或者图例联动高亮时。
@@ -93,19 +102,27 @@
         var $gridList = $("#gridList");
         $gridList.dataGrid({
             url: "/OperationMonitoring/EngineeringHomepage/GetGridJson",
-            height: 600,
+            height: 570,
             colModel: [
-                { label: '模具编号', name: 'MoldNo', width: 80, align: 'left' },
-                { label: '客户', name: 'Customers', width: 60, align: 'left' },
-                { label: '类型', name: 'Type', width: 60, align: 'left' },
+                { label: '模具编号', name: 'MoldNo', width: 100, align: 'center' },
+                { label: '客户', name: 'Customers', width: 100, align: 'center' },
+                { label: '类型', name: 'Type', width: 100, align: 'center' },
                 {
-                    label: '计划交期', name: 'PlannedDeliveryDate', width: 80, align: 'left',
+                    label: '计划交期', name: 'PlannedDeliveryDate', width: 100, align: 'center',
                     formatter: "date", formatoptions: { srcformat: 'Y/m/d', newformat: 'Y/m/d' }
                 },
                 {
-                    label: '预警', name: 'EarlyWarning', width: 90, align: 'left',
+                    label: '预警', name: 'EarlyWarning', width: 100, align: 'center',
                     formatter: function (cellvalue, row, index) {
-                        return '<div style="top: 10%;left: 40%; transform: translate(-10%, -40%);"> <div style="border: 1px #000000 solid;margin:0 auto;position: relative;width:80%; height: 5px;background-color: #f9e1e3; border-radius: 3px;"><div style="white-space: pre-line;width: ' + index.EarlyWarning + '%;height: 100%;background-color:' + index.EarlyWarningColor + ';border-radius: 3px;"></div></div></div>'
+                        //return '<div style="top: 10%;left: 40%; transform: translate(-10%, -40%);"> <div style="border: 1px #000000 solid;margin:0 auto;position: relative;width:80%; height: 5px;background-color: #f9e1e3; border-radius: 3px;"><div style="white-space: pre-line;width: ' + index.EarlyWarning + '%;height: 100%;background-color:' + index.EarlyWarningColor + ';border-radius: 3px;"></div></div></div>'
+                        //提供三个值改变宽度，颜色忽略
+                        var temp = ''
+                        temp += ' <div class="progress" style="height: 10px;">'
+                        temp += '<div class="progress-bar progress-bar-success" style="width:20%;height: 10px"></div>'
+                        temp += ' <div class="progress-bar progress-bar-info" style="width:10%;height: 10px"></div>'
+                        temp += '  <div class="progress-bar progress-bar-warning" style="width:70%;height: 10px"></div>'
+                        //temp += '<div class="progress-bar progress-bar-danger" style="width:15%;height: 5px"></div></div> '
+                        return temp;
                     }
                 },
             ],
@@ -118,17 +135,17 @@
 <body>
     <div class="row">
         <section class="col-lg-6 connectedSortable" style="width:100%;">
-            <div class="">
+            <div class="box box-default">
                 <div class="box-header with-border">
-                    <h4 class="box-title">在制进度正常、延误比例</h4>
+                    <div class="box-title" style="color:#474242;font-size:16px;font-weight:700;">在制进度正常、延误比例</div>
                 </div>
-                <div class="tab-content" style="height:700px;">
-                    <div style="float:left;width:50%">
-                        <div style="text-align:center;font-size:13px;">生产进度</div>
-                        <div id="chart2a" style="height:700px; "></div>
+                <div class="tab-content" style="height:660px;">
+                    <div style="float:left;width:38%">
+                        <div style="text-align:center;font-size:13px;color:#808080;">生产进度</div>
+                        <div id="chart2a" style="height:600px; "></div>
                     </div>
-                    <div class="gridPanel" style="margin-left:50%;width:49%;">
-                        <div style="text-align:center;font-size:13px;">延期模具列表</div>
+                    <div class="gridPanel" style="margin-left:38%;width:60%;">
+                        <div style="text-align:center;font-size:13px;color:#808080;">延期模具列表</div>
                         <table id="gridList"></table>
                         <div id="gridPager"></div>
                     </div>

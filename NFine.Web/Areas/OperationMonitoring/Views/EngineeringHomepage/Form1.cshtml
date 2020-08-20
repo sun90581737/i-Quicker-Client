@@ -4,7 +4,7 @@
 }
 <script src="~/Content/js/echarts/4.3/echarts.js"></script>
 <link href="~/Content/js/pages/AdminLTE.css" rel="stylesheet" />
-<link href="~/Content/js/pages/AdminLTE.min.css" rel="stylesheet" />
+@*<link href="~/Content/js/pages/AdminLTE.min.css" rel="stylesheet" />*@
 <script>
     window.onload = function () {
         loadTwoA();
@@ -27,77 +27,118 @@
             }
         })
         var myChart = echarts.init(document.getElementById('chart1'));
-        var colors = ['#5793f3', '#d14a61', '#675bba'];
-
         var option = {
-            color: colors,
+            title: {
+                text: ''
+            },
             tooltip: {
-                trigger: 'none',
-                axisPointer: {
-                    type: 'cross'
-                }
+                trigger: 'axis'
             },
             grid: {
                 top: 10,
-                bottom: 100
+                left: 40,
+                right: 15,
+                bottom: 50,
+                containLabel: false
             },
-            xAxis: [
-                {
-                    type: 'category',
-                    axisTick: {
-                        alignWithLabel: true
-                    },
-                    axisLine: {
-                        onZero: false,
-                        lineStyle: {
-                            color: colors[1]
-                        }
-                    },
-                    axisPointer: {
-                        label: {
-                            formatter: function (params) {
-                                return '交期达成率  ' + params.value + (params.seriesData.length ? '：' + params.seriesData[0].data : '') + '%';
-                            }
-                        }
-                    },
-                    data: ListMonth//['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12']
+            //toolbox: {
+            //    feature: {
+            //        saveAsImage: {}
+            //    }
+            //},
+            tooltip: {
+                trigger: 'axis',
+                formatter: function (params) {
+                    var relVal = params[0].name;
+                    for (var i = 0, l = params.length; i < l; i++) {
+                        relVal += '<br/>' + params[i].marker + params[i].seriesName + ' : ' + params[i].value + "%";
+                    }
+                    return relVal;
                 }
-            ],
-            yAxis: [
-                {
-                    type: 'value',
-                    axisLabel: {
-                        show: true,
-                        interval: 'auto',
-                        formatter: '{value} %'
+            },
+            xAxis: [{
+                type: 'category',
+                data: ListMonth,
+                axisLine: {
+                    show: false,
+                    lineStyle: {
+                        color: '#808080',
+
+                    }
+                },
+                axisLabel: {
+                    // interval: 0,
+                    // rotate: 40,
+                    textStyle: {
+                        fontSize: '11'
+                    }
+                },
+                axisTick: { //y轴刻度线
+                    show: false
+                },
+            }],
+            yAxis: [{
+                interval: 20,
+                type: 'value',
+                axisLine: {
+                    show: false,
+                    lineStyle: {
+                        color: '#f2961d'
+                    }
+                },
+                splitLine: {
+                    show: true,
+                    lineStyle: {
+                        //color: "#57617B"
+                        type: 'dashed'
+                    }
+                },
+                axisTick: { //y轴刻度线
+                    show: false
+                },
+                axisLabel: {
+                    formatter: function (value) {
+                        return value + "%";
                     },
-                    show: true
-                }
-            ],
+                    show: true,
+                    textStyle: {
+                        color: '#f2961d'
+                    }
+                },
+            }],
             series: [
                 {
                     name: '交期达成率',
                     type: 'line',
-                    smooth: true,
-                    data: ListDeliveryRate,//[80, 76, 86, 96, 92, 99, 88, 90, 95, 80, 95, 88],
-                    // 显示数值
+                    areaStyle: {
+                        normal: {
+                            color: new echarts.graphic.LinearGradient(
+                                    0, 0, 0, 1,
+                                    [
+                                        { offset: 0, color: '#f28938' },
+                                        { offset: 0.5, color: '#ffba86' },
+                                        { offset: 1, color: '#fefefe' }
+                                    ]
+                            )
+                        }
+                    },
                     itemStyle: {
                         normal: {
-                            label: {
-                                show: true,
-                                formatter: '{c}%',
-                                position: 'bottom',
-                                color: "#505050"
+                            color: '#f28938', //改变折线点的颜色
+                            lineStyle: {
+                                color: '#f28938' //改变折线颜色
                             }
                         }
-                    }
+                    },
+                    data: ListDeliveryRate,
                 }
             ]
         };
         myChart.setOption(option);
     }
     function loadTwoB() {
-        var series = [];
+        var listName = new Array();
+        var str = [];
         $.ajax({
             async: false,
             url: "/OperationMonitoring/EngineeringHomepage/GetDataEHNumberMoldsDelivered",
@@ -105,137 +146,103 @@
             dataType: "json",
             success: function (da) {
                 $(da).each(function (index, item) {
-
-                    series.push({
-                        type: 'bar',
-                        name: item.Type,
-                        stack: '总量',
-                        barMaxWidth: 20,
-                        label: {
-                            show: true,
-                            position: 'inside'
-                        },
-                        itemStyle: {
-                            barBorderRadius: item.Type == "按期" ? [10, 0, 0, 10] : [0, 10, 10, 0] // 圆角半径, 单位px, 支持传入数组分别指定 4 个圆角半径
-                        },
-                        data: [item.Number]
-                    })
+                    listName.push(item.Type);
+                    var str3 = new Object();
+                    str3.name = item.Type;
+                    str3.value = item.Number;
+                    str[index] = str3;
                 })
             }
         })
         var myChart = echarts.init(document.getElementById('chart2b'))
-        // 监听屏幕变化自动缩放图表
-        window.addEventListener('resize', function () { myChart.resize() })
-        // 绘制图表
-        myChart.setOption({
-            color: ['#00CC99', '#FF3333'],
-            // 设置图表的位置
-            grid: {
-                x: 60, // 左间距
-                y: 80, // 上间距
-                x2: 60, // 右间距
-                y2: 40, // 下间距
-                containLabel: true // grid 区域是否包含坐标轴的刻度标签, 常用于『防止标签溢出』的场景
-            },
-            // 提示框组件
-            tooltip: {
-                trigger: 'axis', // 触发类型, axis: 坐标轴触发
-                axisPointer: {
-                    // 指示器类型  'line' 直线指示器 'shadow' 阴影指示器 'none' 无指示器
-                    // 'cross' 十字准星指示器 其实是种简写，表示启用两个正交的轴的 axisPointer 
-                    type: 'none'
-                },
+
+        var color = ['#f18533', '#6d48e6']
+
+        var option = {
+            color: color,
+            title: {
+                text: '',
+                left: 'center',
+                top: '50%',
                 textStyle: {
-                    color: '#cdd3ee' // 文字颜色
-                },
-                // 提示框浮层内容格式器，支持字符串模板和回调函数两种形式 折线（区域）图、柱状（条形）图、K线图
-                // {a}（系列名称），{b}（类目值），{c}（数值）, {d}（无）
-                formatter: '{b}<br />{a0}: {c0}<br />{a1}: {c1}'//'{b}<br />{a0}: {c0}%<br />{a1}: {c1}%'
-            },
-            // 图例组件
-            legend: {
-                textStyle: { // 文本样式
-                    fontSize: 16,
-                    color: '#cdd3ee'
-                },
-                top: 13, // 定位
-                itemWidth: 10,  //图例标记的图形宽度
-                itemHeight: 10, //图例标记的图形高度
-                data: ['按期', '延期'] // 图例的数据数组
-            },
-            // X轴
-            xAxis: {
-                type: 'value', // 坐标轴类型,   'value' 数值轴，适用于连续数据
-                // 坐标轴刻度
-                axisTick: {
-                    show: false // 是否显示坐标轴刻度 默认显示
-                },
-                // 坐标轴轴线
-                axisLine: { // 是否显示坐标轴轴线 默认显示
-                    show: false // 是否显示坐标轴轴线 默认显示
-                },
-                // 坐标轴在图表区域中的分隔线
-                splitLine: {
-                    show: false // 是否显示分隔线。默认数值轴显示
-                },
-                // 坐标轴刻度标签
-                axisLabel: {
-                    show: false // 是否显示刻度标签 默认显示
+                    fontSize: 20,
+                    color: '#808080',
+                    fontWeight: 'normal'
                 }
             },
-            yAxis: [
-              // 左侧Y轴
-              {
-                  // 坐标轴类型,  'category' 类目轴，适用于离散的类目数据
-                  // 为该类型时必须通过 data 设置类目数据
-                  type: 'category',
-                  // 坐标轴刻度
-                  axisTick: {
-                      show: false // 是否显示坐标轴刻度 默认显示
-                  },
-                  // 坐标轴轴线
-                  axisLine: { // 是否显示坐标轴轴线 默认显示
-                      show: false, // 是否显示坐标轴轴线 默认显示
-                      lineStyle: { // 坐标轴线线的颜色
-                          color: '#cdd3ee'
-                      }
-                  },
-                  // 坐标轴在图表区域中的分隔线
-                  splitLine: {
-                      show: false // 是否显示分隔线。默认数值轴显示
-                  },
-                  // 坐标轴刻度标签
-                  axisLabel: {
-                      show: true, // 是否显示刻度标签 默认显示
-                      fontSize: 16, // 文字的字体大小
-                      color: '#cdd3ee', // 刻度标签文字的颜色
-                      // 使用字符串模板，模板变量为刻度默认标签 {value}
-                      formatter: '{value}'
-                  },
-                  // 类目数据，在类目轴（type: 'category'）中有效
-                  data: ['']
-              }
-            ],
-            // 系列列表
-            series: series
-        })
+            tooltip: {
+                trigger: 'item'
+            },
+            legend: {
+                //orient: 'vertical',
+                //right: 20,
+                //top: 20,
+                itemWidth: 10,  //图例标记的图形宽度
+                itemHeight: 10, //图例标记的图形高度
+                bottom: 0,
+                left: 'center',
+                data: listName,
+                textStyle: {    //图例文字的样式
+                    color: '#000000',  //文字颜色
+                    fontSize: 12    //文字大小
+                }
+            },
+            series: [{
+                type: 'pie',
+                roseType: 'radius',
+                radius: ['40%', '70%'],
+                center: ['45%', '50%'],
+                data: str,
+                label: {
+                    normal: {
+                        formatter: '{font|{c}}\n{hr|}\n{font|{d}%}',
+                        rich: {
+                            font: {
+                                fontSize: 14,
+                                padding: [5, 0],
+                                color: '#808080'
+                            },
+                            hr: {
+                                height: 0,
+                                borderWidth: 1,
+                                width: '100%',
+                                borderColor: '#808080'
+                            }
+                        }
+                    },
+                },
+                labelLine: {
+                    lineStyle: {
+                        color: '#808080'
+                    }
+                },
+                emphasis: {
+                    itemStyle: {
+                        shadowBlur: 10,
+                        shadowOffsetX: 0,
+                        shadowColor: 'rgba(0,0,0,0.5)'
+                    }
+                }
+            }]
+        };
+        myChart.setOption(option);
     }
 </script>
 <body>
     <div class="row">
         <section class="col-lg-6 connectedSortable" style="width:100%">
-            <div class="">
+            <div class="box box-default">
                 <div class="box-header with-border">
-                    <h4 class="box-title">交期达成率</h4>
+                    <div class="box-title" style="color:#474242;font-size:16px;font-weight:700;">交期达成率</div>
                 </div>
-                <div class="tab-content" style="height:100%;">
-                    <div style="height:450px">
-                        <div style="text-align:center;font-size:13px;">交期达成率趋势</div>
-                        <div id="chart1" style="height:400px;"></div>
+                <div class="tab-content" style="height:660px;">
+                    <div style="float:left;width:40%">
+                        <div style="text-align:center;font-size:13px;color:#808080;">上月交付模具数量</div>
+                        <div id="chart2b" style="height:600px;"></div>
                     </div>
-                    <div style="height:340px;">
-                        <div style="text-align:center;font-size:13px;">上月交付模具数量</div>
-                        <div id="chart2b" style="height:150px;"></div>
+                    <div style="margin-left:40%;">
+                        <div style="text-align:center;font-size:13px;color:#808080;">交期达成率趋势</div>
+                        <div id="chart1" style="height:600px;"></div>
                     </div>
                 </div>
             </div>

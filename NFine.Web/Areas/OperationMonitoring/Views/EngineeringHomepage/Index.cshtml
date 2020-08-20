@@ -158,9 +158,10 @@
                     }
                 },
                 splitLine: {
-                    show: false,
+                    show: true,
                     lineStyle: {
-                        color: "#57617B"
+                        //color: "#57617B"
+                        type:'dashed'
                     }
                 },
                 axisTick: { //y轴刻度线
@@ -226,7 +227,7 @@
         })
         var myChart = echarts.init(document.getElementById('chart2b'))
 
-        var color = ['#2F8DF4', '#FC4567', '#C25EC4']
+        var color = ['#f18533', '#6d48e6']
 
         var option = {
             color: color,
@@ -235,7 +236,7 @@
                 left: 'center',
                 top: '50%',
                 textStyle: {
-                    fontSize: 22,
+                    fontSize: 20,
                     color: '#808080',
                     fontWeight: 'normal'
                 }
@@ -261,7 +262,7 @@
                 type: 'pie',
                 roseType: 'radius',
                 radius: ['40%', '70%'],
-                center: ['48%', '50%'],
+                center: ['45%', '50%'],
                 data: str,
                 label: {
                     normal: {
@@ -334,7 +335,7 @@
                     fontSize: 12    //文字大小
                 }
             },
-            color: ['#0864e1', '#e15a5e', '#f3961d'],
+            color: ['#f28533', '#00ffff', '#ff6239'],
             series: [
                 {
                     name: '访问来源',
@@ -593,9 +594,9 @@
                 <div class="box box-default">
                     <div class="box-header with-border">
                         <div class="box-title" style="color:#474242;font-size:16px;font-weight:700;">交期达成率</div>
-                        @*<div class="box-tools pull-right">
-                                <button type="button" onclick="funOne()" class="btn btn-box-tool"><i class="fa fa-expand"></i></button>
-                            </div>*@
+                        <div class="box-tools pull-right">
+                            <button type="button" onclick="funOne()" class="btn btn-box-tool"><i class="fa fa-expand"></i></button>
+                        </div>
                     </div>
                     <div class="tab-content" style="height:240px;">
                         <div style="float:left;width:40%">
@@ -613,9 +614,9 @@
                 <div class="box box-default">
                     <div class="box-header with-border">
                         <div class="box-title" style="color:#474242;font-size:16px;font-weight:700;">在制进度正常、延误比例</div>
-                        @*<div class="box-tools pull-right">
-                                <button type="button" onclick="funTwo()" class="btn btn-box-tool"><i class="fa fa-expand"></i></button>
-                            </div>*@
+                        <div class="box-tools pull-right">
+                            <button type="button" onclick="funTwo()" class="btn btn-box-tool"><i class="fa fa-expand"></i></button>
+                        </div>
                     </div>
                     <div class="tab-content" style="height:240px;">
                         <div style="float:left;width:38%">
@@ -638,9 +639,9 @@
                         @*<div style="float:right">
                                 <select id="S1" onchange="SelectRelation(this)"><option value="0">---请选择客户---</option></select> : <select id="S2" onchange="SelectOpt(this)"><option value="0">---请选择订单---</option></select>
                             </div>*@
-                        @*<div class="box-tools pull-right">
-                                <button type="button" onclick="funThree()" class="btn btn-box-tool"><i class="fa fa-expand"></i></button>
-                            </div>*@
+                        <div class="box-tools pull-right">
+                            <button type="button" onclick="funThree()" class="btn btn-box-tool"><i class="fa fa-expand"></i></button>
+                        </div>
                     </div>
                     @*<div style="color:#f3961d">订单名称：<span id="txtMC"></span>&emsp;&emsp;&emsp;&emsp;接单日期：<span id="txtRQ"></span>&emsp;&emsp;&emsp;&emsp;订单状态：<span id="txtZT"></span></div>*@
                     <div class="gridPanel" style="height:280px;">
