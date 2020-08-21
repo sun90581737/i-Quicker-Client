@@ -47,7 +47,7 @@
         loadOne1b();
         loadTwo();
         gridList();
-       // loadThree();
+        loadThree();
         loadFour();
         loadFive();
     }
@@ -523,15 +523,16 @@
             series.push({
                 name: tempName,
                 type: 'bar',
-                stack: '广告' + index,
+                barWidth: '15%',
+                barGap: '80%',
                 data: tempArry,
                 itemStyle: {
                     normal: {
                         label: {
                             show: true, //开启显示
-                            position: 'right', //在上方显示
+                            position: 'top', //在上方显示
                             textStyle: { //数值样式
-                                color: '#ffff',
+                                color: 'red',
                                 fontSize: 12
                             }
                         }
@@ -543,23 +544,7 @@
         var myChart = echarts.init(document.getElementById('chart3'));
 
         var option = {
-            color: ['#0867e9', '#ff6d8d', '#f3961d'],
-            tooltip: {
-                trigger: 'axis',
-                axisPointer: {
-                    type: 'cross',
-                    crossStyle: {
-                        color: '#999'
-                    }
-                },
-                formatter: function (params) {
-                    var relVal = params[0].name;
-                    for (var i = 0, l = params.length; i < l; i++) {
-                        relVal += '<br/>' + params[i].marker + params[i].seriesName + ' : ' + params[i].value + "%";
-                    }
-                    return relVal;
-                }
-            },
+            color: ['#6d48e6', '#ff6139', '#f18533'],
             grid: {
                 left: '0%',
                 right: '0',
@@ -567,6 +552,7 @@
                 containLabel: true
             },
             legend: {
+                itemGap:30,
                 data: listDeviceName,
                 itemWidth: 10,  //图例标记的图形宽度
                 itemHeight: 10, //图例标记的图形高度
@@ -575,29 +561,66 @@
                     fontSize: 12    //文字大小
                 }
             },
+            tooltip: {
+                trigger: 'axis',
+                axisPointer: { // 坐标轴指示器，坐标轴触发有效
+                    type: 'shadow' // 默认为直线，可选为：'line' | 'shadow'
+                }
+            },
             xAxis: [
                 {
                     //type: 'category',
+                    //axisTick: { show: false },
+                    //axisLabel: {
+                    //    //X轴刻度配置
+                    //    interval: 0 //0：表示全部显示不间隔；auto:表示自动根据刻度个数和宽度自动设置间隔个数
+                    //    , rotate: 0
+                    //},
                     //data: listDeviceType,
-                    //axisPointer: {
-                    //    type: 'shadow'
-                    //}
-                    show: false
+
+                    type: 'category',
+                    data: listDeviceType,
+                    axisLine: {
+                        show: false,
+                        lineStyle: {
+                            color: '#808080',
+
+                        }
+                    },
+                    axisLabel: {
+                        // interval: 0,
+                        // rotate: 40,
+                        textStyle: {
+                            fontSize: '11'
+                        }
+                    },
+                    axisTick: { //y轴刻度线
+                        show: false
+                    },
+
                 }
             ],
             yAxis: [
                 {
-                    type: 'category',
-                    inverse: true, //true正序false倒序
-                    data: listDeviceType,
-                    axisLabel: {
-                        show: true,
-                        interval: 'auto',
-                        formatter: '{value}',
-                        textStyle: {
-                            color: '#808080'
+                    type: 'value',
+                    name: "(小时)",
+                    axisLine: {
+                        show: false,
+                        lineStyle: {
+                            color: '#f2961d'
                         }
-                    }
+                    },
+                    splitLine: {
+                        show: true,
+                        lineStyle: {
+                            //color: "#57617B"
+                            type: 'dashed'
+                        }
+                    },
+                    axisTick: { //y轴刻度线
+                        show: true
+                    },
+                    axisLabel: {}
                 }
             ],
             series: series
