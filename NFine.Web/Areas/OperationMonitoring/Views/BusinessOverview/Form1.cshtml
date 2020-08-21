@@ -3,11 +3,14 @@
     Layout = "~/Views/Shared/_Index.cshtml";
 }
 
+@*<script src="~/Content/js/jquery/jquery-2.1.1.min.js"></script>*@
 <script src="~/Content/js/echarts/4.3/echarts.js"></script>
+<script src="~/Content/js/pages/world.js"></script>
 <script src="~/Content/js/bootstrap/bootstrap.js"></script>
 <link href="~/Content/js/bootstrap/bootstrap.min.css" rel="stylesheet" />
 <link href="~/Content/js/pages/AdminLTE.css" rel="stylesheet" />
-<link href="~/Content/js/pages/AdminLTE.min.css" rel="stylesheet" />
+@*<link href="~/Content/js/pages/AdminLTE.min.css" rel="stylesheet" />*@
+<link href="~/Content/js/pages/app.css" rel="stylesheet" />
 
 <style>
 </style>
@@ -16,44 +19,43 @@
         loadOne1a();
         loadOne1b();
     }
-    function selectType(obj) {
-        loadOne1a();
-        loadOne1b();
-    }
+    //function selectType(obj) {
+    //    loadOne1a();
+    //    loadOne1b();
+    //}
     function loadOne1a() {
         var listName = new Array();
         var TotalCost = 0;
         var str = [];
-        var keyValue = $('#Type_id option:selected').val();
+        //var keyValue = $('#Type_id option:selected').val();
         $.ajax({
             url: "/OperationMonitoring/BusinessOverview/GetDataTotalCycleCost",
-            data: { keyValue: keyValue },
+            //data: { keyValue: keyValue },
             dataType: "json",
             async: false,
             success: function (data) {
                 $(data).each(function (index, item) {
-                    if (index == 0) {
-                        TotalCost = item.TotalCost;
-                    }
+                    //if (index == 0) {
+                    //    TotalCost = item.TotalCost;
+                    //}
                     listName.push(item.Name);
                     var str3 = new Object();
                     str3.name = item.Name;
                     str3.value = item.Cost;
                     str[index] = str3;
-
+                    TotalCost += item.Cost;
                 })
             }
         });
-
         var myChart = echarts.init(document.getElementById('chart1a'));
         // 指定图表的配置项和数据
         var option = {
             title: {//标题组件
                 text: '￥' + TotalCost + '万',
                 top: '47%',
-                left: '44%',
+                left: '45%',
                 textStyle: {
-                    color: "#505050",
+                    color: "#808080",
                     fontSize: 15,
                     fontFamily: 'KaiTi',
                 }
@@ -62,48 +64,87 @@
                 trigger: 'item', //触发类型(饼状图片就是用这个)
                 formatter: "{b} : ({c}%)"//"{a} <br/>{b} : {c} ({d}%)" //提示框浮层内容格式器
             },
-            color: ['#FFFF99', '#CCCC66', '#00CC99', '#FF3333'],  //手动设置每个图例的颜色
-            legend: {  //图例组件
-                //right:100,  //图例组件离右边的距离
-                orient: 'horizontal',  //布局  纵向布局 图例标记居文字的左边 vertical则反之
-                width: 40,      //图行例组件的宽度,默认自适应
-                x: 'left',   //图例显示在右边
-                y: 'top',   //图例在垂直方向上面显示居中
-                itemWidth: 10,  //图例标记的图形宽度
-                itemHeight: 10, //图例标记的图形高度
-                data: listName,//['物料', '外协', '自制', '异常'],
-                textStyle: {    //图例文字的样式
-                    color: '#333',  //文字颜色
-                    fontSize: 12    //文字大小
-                }
-            },
+            color: ['#febf37', '#f18533', '#6d48e6', '#ff6139'],  //手动设置每个图例的颜色
+            //legend: {  //图例组件
+            //    //right:100,  //图例组件离右边的距离
+            //    //orient: 'horizontal',  //布局  纵向布局 图例标记居文字的左边 vertical则反之
+            //    //width: 40,      //图行例组件的宽度,默认自适应
+            //    //x: 'right',   //图例显示在右边
+            //    //y: 'bottom',   //图例在垂直方向上面显示居中
+            //    itemWidth: 10,  //图例标记的图形宽度
+            //    itemHeight: 10, //图例标记的图形高度
+            //    bottom: 0,
+            //    left: 'center',
+            //    data: listName,//['物料', '外协', '自制', '异常'],
+            //    textStyle: {    //图例文字的样式
+            //        color: '#808080',  //文字颜色
+            //        fontSize: 12    //文字大小
+            //    }
+            //},
             series: [ //系列列表
                 {
                     //name:'设备状态',  //系列名称
                     type: 'pie',   //类型 pie表示饼图
                     center: ['50%', '50%'], //设置饼的原心坐标 不设置就会默认在中心的位置
-                    radius: ['50%', '70%'],  //饼图的半径,第一项是内半径,第二项是外半径,内半径为0就是真的饼,不是环形
+                    radius: ['40%', '58%'],  //饼图的半径,第一项是内半径,第二项是外半径,内半径为0就是真的饼,不是环形
                     itemStyle: {  //图形样式
                         normal: { //normal 是图形在默认状态下的样式；emphasis 是图形在高亮状态下的样式，比如在鼠标悬浮或者图例联动高亮时。
-                            label: {  //饼图图形上的文本标签
-                                show: true,  //平常不显示
-                                formatter: '{c}%',
-                                position: 'inner'
-                            },
-                            labelLine: {     //标签的视觉引导线样式
-                                show: false  //平常不显示
-                            }
-                        },
-                        emphasis: {   //normal 是图形在默认状态下的样式；emphasis 是图形在高亮状态下的样式，比如在鼠标悬浮或者图例联动高亮时。
-                            label: {  //饼图图形上的文本标签
-                                show: true,
-                                position: 'center',
-                                textStyle: {
-                                    fontSize: '20',
-                                    fontWeight: 'bold'
+                            borderWidth: 4,
+                            borderColor: '#fff',
+                            //label: {  //饼图图形上的文本标签
+                            //    show: true,  //平常不显示
+                            //    formatter: '{c}%',
+                            //    position: 'inner'
+                            //},
+                            //labelLine: {     //标签的视觉引导线样式
+                            //    show: false  //平常不显示
+                            //}
+                            label: {
+                                //formatter: '{font|{c}}\n{hr|}\n{font|{d}%}',
+                                formatter: function (params) {
+                                    var percent = 0;
+                                    var total = 0;
+                                    for (var i = 0; i < str.length; i++) {
+                                        total += str[i].value;
+                                    }
+                                    percent = ((params.value / total) * 100).toFixed(0);
+                                    if (params.name !== '') {
+                                        return params.name + '：' + params.value + '万' + '\n' + '\n' + percent + '%';
+                                    } else {
+                                        return '';
+                                    }
+                                },
+                                rich: {
+                                    font: {
+                                        fontSize: 14,
+                                        padding: [5, 0],
+                                        color: '#808080'
+                                    },
+                                    hr: {
+                                        height: 0,
+                                        borderWidth: 1,
+                                        width: '100%',
+                                        borderColor: '#808080'
+                                    }
                                 }
-                            }
-                        }
+                            },
+                            //labelLine: {
+                            //    length: 5,
+                            //    length2: 10,
+                            //    show: true,
+                            //    color: '#00ffff'
+                            //}
+                        },
+                        //emphasis: {   //normal 是图形在默认状态下的样式；emphasis 是图形在高亮状态下的样式，比如在鼠标悬浮或者图例联动高亮时。
+                        //    label: {  //饼图图形上的文本标签
+                        //        show: true,
+                        //        position: 'center',
+                        //        textStyle: {
+                        //            fontSize: '18',
+                        //            fontWeight: 'bold'
+                        //        }
+                        //    }
+                        //}
                     },
                     data: str//[ { value: 27, name: '物料' }, { value: 18, name: '外协' }, { value: 53, name: '自制' }, { value: 2, name: '异常' } ]
                 }
@@ -113,11 +154,12 @@
     }
     function loadOne1b() {
         var listName = new Array();
+        var TotalCost = 0;
         var str = [];
-        var keyValue = $('#Type_id option:selected').val();
+        //var keyValue = $('#Type_id option:selected').val();
         $.ajax({
             url: "/OperationMonitoring/BusinessOverview/GetDataCostByDepartment",
-            data: { keyValue: keyValue },
+            //data: { keyValue: keyValue },
             dataType: "json",
             async: false,
             success: function (data) {
@@ -127,64 +169,111 @@
                     str3.name = item.Name;
                     str3.value = item.Cost;
                     str[index] = str3;
-
+                    TotalCost += item.Cost;
                 })
             }
         });
 
         var myChart = echarts.init(document.getElementById('chart1b'));
         var option = {
-            //title: {
-            //    text: '某站点用户访问来源',
-            //    subtext: '纯属虚构',
-            //    left: 'center'
+            title: {//标题组件
+                text: '￥' + TotalCost + '万',
+                top: '47%',
+                left: '46%',
+                textStyle: {
+                    color: "#808080",
+                    fontSize: 15,
+                    fontFamily: 'KaiTi',
+                }
+            },
+            tooltip: { //提示框组件
+                trigger: 'item', //触发类型(饼状图片就是用这个)
+                formatter: "{b} : ({c}%)"//"{a} <br/>{b} : {c} ({d}%)" //提示框浮层内容格式器
+            },
+            color: ['#febf37', '#f18533', '#6d48e6', '#ff6139'],  //手动设置每个图例的颜色
+            //legend: {
+            //    //orient: 'vertical',
+            //    left: 'center',
+            //    itemWidth: 10,  //图例标记的图形宽度
+            //    itemHeight: 10, //图例标记的图形高度
+            //    bottom: 20,
+            //    data: listName,//['CNC', 'EDM', 'WEDM', '车铣磨抛']
+            //    textStyle: {    //图例文字的样式
+            //        color: '#808080',  //文字颜色
+            //        fontSize: 12    //文字大小
+            //    }
             //},
-            tooltip: {
-                trigger: 'item',
-                formatter: "{b} : ({c}%)"
-            },
-            legend: {
-                orient: 'vertical',
-                left: 'left',
-                itemWidth: 10,  //图例标记的图形宽度
-                itemHeight: 10, //图例标记的图形高度
-                data: listName//['CNC', 'EDM', 'WEDM', '车铣磨抛']
-            },
-            color: ['#FFFF99', '#CCCC66', '#00CC99', '#FF3333'],
             series: [
                 {
                     name: '访问来源',
                     type: 'pie',
-                    radius: '65%',
                     center: ['50%', '50%'],
+                    radius: ['40%', '58%'],
                     data: str//[{ value: 23, name: 'CNC' },{ value: 26, name: 'EDM' },{ value: 17, name: 'WEDM' },{ value: 34, name: '车铣磨抛' },]
                     ,
                     itemStyle: {  //图形样式
                         normal: { //normal 是图形在默认状态下的样式；emphasis 是图形在高亮状态下的样式，比如在鼠标悬浮或者图例联动高亮时。
-                            label: {  //饼图图形上的文本标签
-                                show: true,  //平常不显示
-                                formatter: '{c}%',
-                                position: 'inner'
-                            },
-                            labelLine: {     //标签的视觉引导线样式
-                                show: false  //平常不显示
-                            }
-                        },
-                        emphasis: {   //normal 是图形在默认状态下的样式；emphasis 是图形在高亮状态下的样式，比如在鼠标悬浮或者图例联动高亮时。
-                            label: {  //饼图图形上的文本标签
-                                show: true,
-                                position: 'center',
-                                textStyle: {
-                                    fontSize: '20',
-                                    fontWeight: 'bold'
+                            borderWidth: 4,
+                            borderColor: '#fff',
+                            //label: {  //饼图图形上的文本标签
+                            //    show: true,  //平常不显示
+                            //    formatter: '{c}%',
+                            //    position: 'inner'
+                            //},
+                            //labelLine: {     //标签的视觉引导线样式
+                            //    show: false  //平常不显示
+                            //}
+                            label: {
+                                //formatter: '{font|{c}}\n{hr|}\n{font|{d}%}',
+                                formatter: function (params) {
+                                    var percent = 0;
+                                    var total = 0;
+                                    for (var i = 0; i < str.length; i++) {
+                                        total += str[i].value;
+                                    }
+                                    percent = ((params.value / total) * 100).toFixed(0);
+                                    if (params.name !== '') {
+                                        return params.name + '\n' + '\n' + percent + '%';
+                                    } else {
+                                        return '';
+                                    }
+                                },
+                                rich: {
+                                    font: {
+                                        fontSize: 14,
+                                        padding: [5, 0],
+                                        color: '#808080'
+                                    },
+                                    hr: {
+                                        height: 0,
+                                        borderWidth: 1,
+                                        width: '100%',
+                                        borderColor: '#808080'
+                                    }
                                 }
                             },
-                            itemStyle: {
-                                shadowBlur: 10,
-                                shadowOffsetX: 0,
-                                shadowColor: 'rgba(0, 0, 0, 0.5)'
-                            }
-                        }
+                            //labelLine: {
+                            //    length: 5,
+                            //    length2: 10,
+                            //    show: true,
+                            //    color: '#00ffff'
+                            //}
+                        },
+                        //emphasis: {   //normal 是图形在默认状态下的样式；emphasis 是图形在高亮状态下的样式，比如在鼠标悬浮或者图例联动高亮时。
+                        //    label: {  //饼图图形上的文本标签
+                        //        show: true,
+                        //        position: 'center',
+                        //        textStyle: {
+                        //            fontSize: '20',
+                        //            fontWeight: 'bold'
+                        //        }
+                        //    },
+                        //    itemStyle: {
+                        //        shadowBlur: 10,
+                        //        shadowOffsetX: 0,
+                        //        shadowColor: 'rgba(0, 0, 0, 0.5)'
+                        //    }
+                        //}
                     }
                 }
             ]
@@ -194,27 +283,29 @@
 </script>
 <body>
     <div class="row">
-        <section class="col-lg-6 connectedSortable" style="width:100%">
-            <div class="">
+        <section class="col-lg-6 connectedSortable" style="width:100%;">
+            <div class="box box-default">
                 <div class="box-header with-border">
-                    <h4 class="box-title">生产成本</h4>
-                    <select id="Type_id" name="Type" style="border: solid 1px #000;" onchange="selectType(this)">
+                    <div class="box-title" style="color:#474242;font-size:16px;font-weight:700;">生产成本</div>
+                    <div style="float:right">
+                        @*<select id="Type_id" name="Type" style="border: solid 1px #000;" onchange="selectType(this)">
                         <option value="1" selected="selected">一周</option>
                         <option value="2">两周</option>
                         <option value="3">三周</option>
                         <option value="4">一个月</option>
                         <option value="5">半年</option>
                         <option value="6">一年</option>
-                    </select>
+                    </select>*@
+                    </div>
                 </div>
                 <div class="tab-content" style="height:100%;">
                     <div style="float:left;width:50%">
-                        <div style="text-align:center;font-size:13px;">周期总生产成本</div>
-                        <div id="chart1a" style="height:700px; "></div>
+                        <div style="text-align:center;font-size:13px;color:#808080;">周期总生产成本</div>
+                        <div id="chart1a" style="height:600px; "></div>
                     </div>
                     <div style="margin-left:50%;width:auto;">
-                        <div style="text-align:center;font-size:13px;">自制成本按部门分类</div>
-                        <div id="chart1b" style="height:700px; "></div>
+                        <div style="text-align:center;font-size:13px;color:#808080;">自制成本按部门分类</div>
+                        <div id="chart1b" style="height:600px; "></div>
                     </div>
                 </div>
             </div>

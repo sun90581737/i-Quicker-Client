@@ -744,6 +744,8 @@
     <Content Include="Areas\QualityOptimization\Views\QualityEngineering\Form3.cshtml" />
     <Content Include="Areas\QualityOptimization\Views\QualityEngineering\Form4.cshtml" />
     <Content Include="packages.config" />
+    <Content Include="Areas\OperationMonitoring\Views\BusinessOverview\Form5.cshtml" />
+    <Content Include="Areas\OperationMonitoring\Views\BusinessOverview\Form6.cshtml" />
     <None Include="Properties\PublishProfiles\NFine.Framework.Release.pubxml" />
     <Content Include="Views\FastLogin\Index.cshtml" />
   </ItemGroup>

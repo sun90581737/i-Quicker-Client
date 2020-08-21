@@ -4,11 +4,39 @@
 }
 
 <script src="~/Content/js/echarts/4.3/echarts.js"></script>
+<script src="~/Content/js/pages/world.js"></script>
 <script src="~/Content/js/bootstrap/bootstrap.js"></script>
 <link href="~/Content/js/bootstrap/bootstrap.min.css" rel="stylesheet" />
 <link href="~/Content/js/pages/AdminLTE.css" rel="stylesheet" />
-<link href="~/Content/js/pages/AdminLTE.min.css" rel="stylesheet" />
+@*<link href="~/Content/js/pages/AdminLTE.min.css" rel="stylesheet" />*@
+<link href="~/Content/js/pages/app.css" rel="stylesheet" />
 <style>
+    div.ui-jqgrid-view table.ui-jqgrid-btable {
+        border-style: none;
+        border-top-style: none;
+        border-collapse: separate;
+    }
+
+    div.ui-jqgrid-view table.ui-jqgrid-btable td {
+        border-left-style: none;
+    }
+
+    div.ui-jqgrid-view table.ui-jqgrid-htable {
+        border-style: none;
+        border-top-style: none;
+        border-collapse: separate;
+    }
+
+    div.ui-jqgrid-view table.ui-jqgrid-btable th {
+        border-left-style: none;
+    }
+    #gview_gridList table[aria-labelledby="gbox_gridList"] th.ui-th-ltr {
+        background: #f2961d;
+        color:#fff;
+    }
+    #gridList, .ui-th-ltr, th.ui-th-ltr {
+        background: #fcead2;
+    }
 </style>
 <script>
     window.onload = function () {
@@ -32,94 +60,153 @@
             }
         })
         var myChart = echarts.init(document.getElementById('chart2'));
-        var colors = ['#5793f3', '#d14a61', '#675bba'];
 
         var option = {
-            color: colors,
+            title: {
+                text: ''
+            },
             tooltip: {
-                trigger: 'none',
-                axisPointer: {
-                    type: 'cross'
-                }
+                trigger: 'axis'
             },
             grid: {
                 top: 10,
-                bottom: 30
+                left: 40,
+                right: 15,
+                bottom: 50,
+                containLabel: false
             },
-            xAxis: [
-                {
-                    type: 'category',
-                    axisTick: {
-                        alignWithLabel: true
-                    },
-                    axisLine: {
-                        onZero: false,
-                        lineStyle: {
-                            color: colors[1]
-                        }
-                    },
-                    axisPointer: {
-                        label: {
-                            formatter: function (params) {
-                                return '交期达成率  ' + params.value + (params.seriesData.length ? '：' + params.seriesData[0].data : '') + '%';
-                            }
-                        }
-                    },
-                    data: ListMonth//['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12']
+            //toolbox: {
+            //    feature: {
+            //        saveAsImage: {}
+            //    }
+            //},
+            tooltip: {
+                trigger: 'axis',
+                formatter: function (params) {
+                    var relVal = params[0].name;
+                    for (var i = 0, l = params.length; i < l; i++) {
+                        relVal += '<br/>' + params[i].marker + params[i].seriesName + ' : ' + params[i].value + "%";
+                    }
+                    return relVal;
                 }
-            ],
-            yAxis: [
-                {
-                    type: 'value',
-                    axisLabel: {
-                        show: true,
-                        interval: 'auto',
-                        formatter: '{value} %'
+            },
+            xAxis: [{
+                type: 'category',
+                data: ListMonth,
+                axisLine: {
+                    show: false,
+                    lineStyle: {
+                        color: '#808080',
+
+                    }
+                },
+                axisLabel: {
+                    // interval: 0,
+                    // rotate: 40,
+                    textStyle: {
+                        fontSize: '11'
+                    }
+                },
+                axisTick: { //y轴刻度线
+                    show: false
+                },
+            }],
+            yAxis: [{
+                min: '70',
+                interval: 10,
+                type: 'value',
+                axisLine: {
+                    show: false,
+                    lineStyle: {
+                        color: '#f2961d'
+                    }
+                },
+                splitLine: {
+                    show: false,
+                    lineStyle: {
+                        color: "#f2961d"
+                    }
+                },
+                axisTick: { //y轴刻度线
+                    show: false
+                },
+                axisLabel: {
+                    formatter: function (value) {
+                        return value + "%";
                     },
-                    show: true
-                }
-            ],
+                    show: true,
+                    textStyle: {
+                        color: '#f2961d'
+                    }
+                },
+            }],
             series: [
                 {
                     name: '交期达成率',
                     type: 'line',
-                    smooth: true,
-                    data: ListDeliveryRate,//[80, 76, 86, 96, 92, 99, 88, 90, 95, 80, 95, 88],
-                    // 显示数值
+                    //areaStyle: {normal: {
+                    //    color: new echarts.graphic.LinearGradient(
+                    //            0, 0, 0, 1,
+                    //            [
+                    //                { offset: 0, color: '#34d0e9' },
+                    //                { offset: 0.5, color: '#0a3d70' },
+                    //                { offset: 1, color: 'transparent' }
+                    //            ]
+                    //    )
+                    //}
+                    //},
                     itemStyle: {
                         normal: {
-                            label: {
-                                show: true,
-                                formatter: '{c}%',
-                                position: 'bottom',
-                                color: "#505050"
+                            color: '#f2961d', //改变折线点的颜色
+                            lineStyle: {
+                                color: '#f2961d' //改变折线颜色
                             }
                         }
-                    }
+                    },
+                    data: ListDeliveryRate,
                 }
             ]
         };
+
         myChart.setOption(option);
     }
     function gridList() {
         var $gridList = $("#gridList");
         $gridList.dataGrid({
             url: "/OperationMonitoring/BusinessOverview/GetGridJson",
-            height: 300,
+            height: 280,
             colModel: [
-                { label: '模具编号', name: 'MoldNo', width: 150, align: 'left' },
-                { label: '试模', name: 'MoldTest', width: 150, align: 'left' },
-                { label: '类型', name: 'Type', width: 150, align: 'left' },
-                { label: '状态', name: 'State', width: 150, align: 'left' },
-                { label: '产品名称', name: 'ProductName', width: 150, align: 'left' },
+                { label: '模具编号', name: 'MoldNo', width: 150, align: 'center' },
+                { label: '试模', name: 'MoldTest', width: 150, align: 'center' },
+                { label: '类型', name: 'Type', width: 150, align: 'center' },
+                { label: '状态', name: 'State', width: 150, align: 'center' },
+                { label: '产品名称', name: 'ProductName', width: 150, align: 'center' },
                 {
                     label: '计划交期', name: 'PlannedDeliveryDate', width: 150, align: 'left',
                     formatter: "date", formatoptions: { srcformat: 'Y/m/d', newformat: 'Y/m/d' }
                 },
                 {
-                    label: '预警', name: 'EarlyWarning', width: 120, align: 'left',
+                    label: '预警', name: 'EarlyWarning', width: 100, align: 'center',
                     formatter: function (cellvalue, row, index) {
-                        return '<div style="top: 0%;left: 50%; transform: translate(-0%, -50%);"> <div style="border: 1px #000000 solid;margin:0 auto;position: relative;width:100%; height: 5px; border-radius: 3px;"><div style="white-space: pre-line;width: ' + index.EarlyWarning + '%;height: 100%;background-color:' + index.EarlyWarningColor + ';border-radius: 3px;"></div></div></div>'
+                        // return '<div style="top: 0%;left: 50%; transform: translate(-0%, -50%);"> <div style="border: 1px #000000 solid;margin:0 auto;position: relative;width:80%; height: 5px;background-color: #f9e1e3; border-radius: 3px;"><div style="white-space: pre-line;width: ' + index.EarlyWarning + '%;height: 100%;background-color:' + index.EarlyWarningColor + ';border-radius: 3px;"></div></div></div>'
+                        //提供三个值改变宽度，颜色忽略
+                        var temp = ''
+                        temp += ' <div class="progress" style="height: 10px;">'
+                        var tip = index.EarlyWarning.split(';');
+                        if (tip == 0) {
+                            temp += '<div class="progress-bar progress-bar-success" style="width:100%;height: 10px"></div>'
+                        } else if (tip > 0) {
+                            var attnum = 1 - tip;
+                            temp += '<div class="progress-bar progress-bar-success" style="width:' + tip * 100 + '%;height: 10px"></div>'
+                            temp += ' <div class="progress-bar progress-bar-info" style="width:' + attnum * 100 + '%;height: 10px"></div>'
+                        } else if (tip.length == 2) {
+                            var attnums = 1 - tip[0] - tip[1];
+                            temp += '<div class="progress-bar progress-bar-success" style="width:' + tip[0] * 100 + '%;height: 10px"></div>'
+                            temp += ' <div class="progress-bar progress-bar-info" style="width:' + tip[1] * 100 + '%;height: 10px"></div>'
+                            temp += '  <div class="progress-bar progress-bar-warning" style="width:' + attnums * 100 + '%;height: 10px"></div>'
+                        }
+                        //temp += '<div class="progress-bar progress-bar-danger" style="width:15%;height: 5px"></div></div> '
+                        return temp;
                     }
                 },
             ],
@@ -132,17 +219,17 @@
 <body>
     <div class="row">
         <section class="col-lg-6 connectedSortable" style="width:100%">
-            <div class="">
+            <div class="box box-default">
                 <div class="box-header with-border">
-                    <h4 class="box-title">交付率/进度</h4>
+                    <h4 class="box-title" style="color:#474242;font-size:16px;font-weight:700;">交付率/进度</h4>
                 </div>
                 <div class="tab-content" style="height:100%;">
-                    <div style="height:200px">
-                        <div style="text-align:center;font-size:13px;">交期达成率趋势</div>
-                        <div id="chart2" style="height:250px;"></div>
+                    <div style="">
+                        <div style="text-align:center;font-size:13px;color:#808080;">交期达成率趋势</div>
+                        <div id="chart2" style="height:280px;"></div>
                     </div>
-                    <div class="gridPanel" style="margin:120px;">
-                        <div style="text-align:center;font-size:13px;">在制模具进度</div>
+                    <div class="gridPanel" style="height:90%;margin:10px;width:98%">
+                        <div style="text-align:center;font-size:13px;color:#808080;">在制模具进度</div>
                         <table id="gridList"></table>
                         <div id="gridPager"></div>
                     </div>

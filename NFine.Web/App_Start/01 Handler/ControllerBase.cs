@@ -48,6 +48,18 @@ namespace NFine.Web
         }
         [HttpGet]
         [HandlerAuthorize]
+        public virtual ActionResult Form5()
+        {
+            return View();
+        }
+        [HttpGet]
+        [HandlerAuthorize]
+        public virtual ActionResult Form6()
+        {
+            return View();
+        }
+        [HttpGet]
+        [HandlerAuthorize]
         public virtual ActionResult Details()
         {
             return View();
