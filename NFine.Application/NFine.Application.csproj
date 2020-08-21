@@ -68,12 +68,15 @@
     <Compile Include="OperationMonitoring\CustomerListApp.cs" />
     <Compile Include="OperationMonitoring\CustomerListDetailApp.cs" />
     <Compile Include="OperationMonitoring\DeliveryCompletionRateApp.cs" />
+    <Compile Include="OperationMonitoring\DepartmentQualifiedRateApp.cs" />
     <Compile Include="OperationMonitoring\EHDelayMoldListApp.cs" />
     <Compile Include="OperationMonitoring\EHDeliveryCompletionRateApp.cs" />
     <Compile Include="OperationMonitoring\EHNumberMoldsDeliveredApp.cs" />
     <Compile Include="OperationMonitoring\EHProductionScheduleApp.cs" />
+    <Compile Include="OperationMonitoring\ElectrodeQualifiedRateApp.cs" />
     <Compile Include="OperationMonitoring\KeyCustomersApp.cs" />
     <Compile Include="OperationMonitoring\MoldMakingProgressApp.cs" />
+    <Compile Include="OperationMonitoring\MoldProportionApp.cs" />
     <Compile Include="OperationMonitoring\TotalCycleCostApp.cs" />
     <Compile Include="OperationMonitoring\UserEngineeringApp.cs" />
     <Compile Include="ProductionManage\PMHomeCapacityLoadApp.cs" />

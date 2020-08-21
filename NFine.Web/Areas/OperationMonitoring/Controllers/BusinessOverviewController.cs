@@ -16,6 +16,9 @@ namespace NFine.Web.Areas.OperationMonitoring.Controllers
         private MoldMakingProgressApp mmpApp = new MoldMakingProgressApp();
         private BOCapacityLoadApp boclApp = new BOCapacityLoadApp();
         private KeyCustomersApp kcApp = new KeyCustomersApp();
+        private MoldProportionApp mpApp = new MoldProportionApp();
+        private ElectrodeQualifiedRateApp eqrApp = new ElectrodeQualifiedRateApp();
+        private DepartmentQualifiedRateApp dqrApp = new DepartmentQualifiedRateApp();
 
         [HttpGet]
         [HandlerAjaxOnly]
@@ -68,6 +71,30 @@ namespace NFine.Web.Areas.OperationMonitoring.Controllers
         public ActionResult GetDataKeyCustomers()
         {
             var data = kcApp.GetList().Where(p => p.IsEffective == 1);
+            return Content(data.ToJson());
+        }
+
+        [HttpGet]
+        [HandlerAjaxOnly]
+        public ActionResult GetDataMoldProportion()
+        {
+            var data = mpApp.GetList().Where(p => p.IsEffective == 1);
+            return Content(data.ToJson());
+        }
+
+        [HttpGet]
+        [HandlerAjaxOnly]
+        public ActionResult GetDataElectrodeQualifiedRate()
+        {
+            var data = eqrApp.GetList().Where(p => p.IsEffective == 1);
+            return Content(data.ToJson());
+        }
+
+        [HttpGet]
+        [HandlerAjaxOnly]
+        public ActionResult GetDataDepartmentQualifiedRate()
+        {
+            var data = dqrApp.GetList().Where(p => p.IsEffective == 1);
             return Content(data.ToJson());
         }
     }

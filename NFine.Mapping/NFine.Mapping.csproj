@@ -63,12 +63,15 @@
     <Compile Include="OperationMonitoring\CustomerListDetailMap.cs" />
     <Compile Include="OperationMonitoring\CustomerListMap.cs" />
     <Compile Include="OperationMonitoring\DeliveryCompletionRateMap.cs" />
+    <Compile Include="OperationMonitoring\DepartmentQualifiedRateMap.cs" />
     <Compile Include="OperationMonitoring\EHDelayMoldListMap.cs" />
     <Compile Include="OperationMonitoring\EHDeliveryCompletionRateMap.cs" />
     <Compile Include="OperationMonitoring\EHNumberMoldsDeliveredMap.cs" />
     <Compile Include="OperationMonitoring\EHProductionScheduleMap.cs" />
+    <Compile Include="OperationMonitoring\ElectrodeQualifiedRateMap.cs" />
     <Compile Include="OperationMonitoring\KeyCustomersMap.cs" />
     <Compile Include="OperationMonitoring\MoldMakingProgressMap.cs" />
+    <Compile Include="OperationMonitoring\MoldProportionMap.cs" />
     <Compile Include="OperationMonitoring\TotalCycleCostMap.cs" />
     <Compile Include="OperationMonitoring\UserEngineeringMap.cs" />
     <Compile Include="ProductionManage\PMHomeCapacityLoadMap.cs" />
